@@ -42,7 +42,7 @@ public class Biodata implements Filter<Profil>{
     
     //create for insertion
     public Biodata(String nama, Kelamin kelamin, Agama agama, String asalSekolah, String alamat, String tlp1){
-        this(nama, kelamin, agama, asalSekolah, null, null, alamat, tlp1, null, null, null);
+        this(nama, kelamin, agama, asalSekolah, null, null, alamat, tlp1, null, null, null );
     }
     
     //create from db
