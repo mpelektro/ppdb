@@ -61,6 +61,7 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
     private ArrayList<IPP> tIPPs;
     private ArrayList<CicilanHutang> tCicilanHutangs;
     private ArrayList<Seragam> tSeragams;
+    private ArrayList<Almamater> tAlmamaters;
     private ArrayList<Buku> tBukus;
     private ArrayList<IKS> tIKSs;
     private ArrayList<ILL> tILLs;
@@ -164,6 +165,16 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
     public List<Seragam> seragamS;
     public List<Seragam> seragamSToDB;
     public float unpaidSeragam = 0f;
+    
+    //Almamater PART
+    private InputTransactionAlmamater inputTransactionAlmamater;
+    private TableModel tableModelAlmamater;
+    private UUID almamaterTDetailUUID;
+    private AlmamaterTransactionDetail almamaterTransactionDetail;
+    private Almamater almamater;
+    public List<Almamater> almamaterS;
+    public List<Almamater> almamaterSToDB;
+    public float unpaidAlmamater = 0f;
     
     //Attribute PART
     private InputTransactionAttribute inputTransactionAttribute;
@@ -324,7 +335,7 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
         initComponents();
     }
     
-    public InputTransactionFrameSeparated(AppFrame af, Clerk cl, Profil profil, ArrayList<IPP> paramIPPs, IPSP paramIPSP, ArrayList<Seragam> paramSeragams, ArrayList<Buku> paramBukus, ArrayList<IKS> paramIKSs, ArrayList<ILL> paramILLs, IPSB paramIPSB, IUA paramIUA, ArrayList<IUS> paramIUSs, ArrayList<OSIS> paramOSISs, ArrayList<Attribute> paramAttributes, ArrayList<PVT> paramPVTs, ArrayList<Tabungan> paramTabungans, ArrayList<Sumbangan> paramSumbangans, PASB paramPASB, ArrayList<CicilanHutang> paramCicilanHutangs) {
+    public InputTransactionFrameSeparated(AppFrame af, Clerk cl, Profil profil, ArrayList<IPP> paramIPPs, IPSP paramIPSP, ArrayList<Seragam> paramSeragams, ArrayList<Buku> paramBukus, ArrayList<IKS> paramIKSs, ArrayList<ILL> paramILLs, IPSB paramIPSB, IUA paramIUA, ArrayList<IUS> paramIUSs, ArrayList<OSIS> paramOSISs, ArrayList<Attribute> paramAttributes, ArrayList<PVT> paramPVTs, ArrayList<Tabungan> paramTabungans, ArrayList<Sumbangan> paramSumbangans, PASB paramPASB, ArrayList<CicilanHutang> paramCicilanHutangs, ArrayList<Almamater> paramAlmamaters) {
         this.appFrame = af;
         this.clerk = cl;
         Clerk.current.id = this.clerk.id;
@@ -333,6 +344,7 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
         tCicilanHutangs = paramCicilanHutangs;
         tIPSP = paramIPSP;
         tSeragams = paramSeragams;
+        tAlmamaters = paramAlmamaters;
         tBukus = paramBukus;
         tIKSs = paramIKSs;
         tILLs = paramILLs;
@@ -355,7 +367,7 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
         initComponents();
     }
     
-    public InputTransactionFrameSeparated(AppFramePendaftaran af, Clerk cl, Profil profil, ArrayList<IPP> paramIPPs, IPSP paramIPSP, ArrayList<Seragam> paramSeragams, ArrayList<Buku> paramBukus, ArrayList<IKS> paramIKSs, ArrayList<ILL> paramILLs, IPSB paramIPSB, IUA paramIUA, ArrayList<IUS> paramIUSs, ArrayList<OSIS> paramOSISs, ArrayList<Attribute> paramAttributes, ArrayList<PVT> paramPVTs, ArrayList<Tabungan> paramTabungans, ArrayList<Sumbangan> paramSumbangans, ArrayList<CicilanHutang> paramCicilanHutangs) {
+    public InputTransactionFrameSeparated(AppFramePendaftaran af, Clerk cl, Profil profil, ArrayList<IPP> paramIPPs, IPSP paramIPSP, ArrayList<Seragam> paramSeragams, ArrayList<Buku> paramBukus, ArrayList<IKS> paramIKSs, ArrayList<ILL> paramILLs, IPSB paramIPSB, IUA paramIUA, ArrayList<IUS> paramIUSs, ArrayList<OSIS> paramOSISs, ArrayList<Attribute> paramAttributes, ArrayList<PVT> paramPVTs, ArrayList<Tabungan> paramTabungans, ArrayList<Sumbangan> paramSumbangans, ArrayList<CicilanHutang> paramCicilanHutangs, ArrayList<Almamater> paramAlmamaters) {
         this.appFramePendaftaran = af;
         this.clerk = cl;
         Clerk.current.id = this.clerk.id;
@@ -537,6 +549,14 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
         jButtonBayarCicilanHutang = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
         jFormattedTextFieldIDDSaldo2 = new javax.swing.JFormattedTextField();
+        jFrameAlmamater = new javax.swing.JFrame();
+        jPanelAlmamater = new javax.swing.JPanel();
+        jLabel37 = new javax.swing.JLabel();
+        jScrollPane13 = new javax.swing.JScrollPane();
+        jTableAlmamater = new javax.swing.JTable();
+        jLabel38 = new javax.swing.JLabel();
+        jUnpaidAlmamater = new javax.swing.JTextField();
+        jButtonBayarAlmamater = new javax.swing.JButton();
         DefaultComboBoxModel paymentMethodComboBoxModel = new DefaultComboBoxModel(TransactionDetail.PaymentMethod.values());
         tableModelSeragam = new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -758,6 +778,8 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
         jTableTunggakanAll = new javax.swing.JTable();
         jButtonCicilanHutang = new javax.swing.JButton();
         jTextFieldCicilanHutangAmountSimple = new javax.swing.JFormattedTextField();
+        jButtonAlmamater = new javax.swing.JButton();
+        jTextFieldAlmamaterAmountSimple = new javax.swing.JFormattedTextField();
 
         jDialogTransactionSummary.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         jDialogTransactionSummary.setMinimumSize(new java.awt.Dimension(1024, 768));
@@ -2169,6 +2191,88 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
             .addComponent(jPanelCicilanHutang, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
         );
 
+        jFrameAlmamater.setMinimumSize(new java.awt.Dimension(640, 480));
+
+        jPanelAlmamater.setMinimumSize(new java.awt.Dimension(440, 550));
+        jPanelAlmamater.setPreferredSize(new java.awt.Dimension(480, 302));
+
+        jLabel37.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel37.setText(org.openide.util.NbBundle.getMessage(InputTransactionFrameSeparated.class, "InputTransactionFrameSeparated.jLabel37.text")); // NOI18N
+
+        try{
+            tableModelSeragam = buildSeragamTableModel(profil);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        jTableAlmamater.setModel(tableModelSeragam);
+        jTableAlmamater.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jTableAlmamaterPropertyChange(evt);
+            }
+        });
+        jScrollPane13.setViewportView(jTableAlmamater);
+
+        jLabel38.setText(org.openide.util.NbBundle.getMessage(InputTransactionFrameSeparated.class, "InputTransactionFrameSeparated.jLabel38.text")); // NOI18N
+
+        jUnpaidAlmamater.setText(String.valueOf(unpaidSeragam));
+        jUnpaidAlmamater.setEnabled(false);
+
+        jButtonBayarAlmamater.setText(org.openide.util.NbBundle.getMessage(InputTransactionFrameSeparated.class, "InputTransactionFrameSeparated.jButtonBayarAlmamater.text")); // NOI18N
+        jButtonBayarAlmamater.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBayarAlmamaterActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelAlmamaterLayout = new javax.swing.GroupLayout(jPanelAlmamater);
+        jPanelAlmamater.setLayout(jPanelAlmamaterLayout);
+        jPanelAlmamaterLayout.setHorizontalGroup(
+            jPanelAlmamaterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelAlmamaterLayout.createSequentialGroup()
+                .addGroup(jPanelAlmamaterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelAlmamaterLayout.createSequentialGroup()
+                        .addComponent(jLabel37)
+                        .addGap(104, 104, 104)
+                        .addComponent(jLabel38)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jUnpaidAlmamater, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanelAlmamaterLayout.createSequentialGroup()
+                        .addGap(184, 184, 184)
+                        .addComponent(jButtonBayarAlmamater)))
+                .addContainerGap(28, Short.MAX_VALUE))
+        );
+        jPanelAlmamaterLayout.setVerticalGroup(
+            jPanelAlmamaterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelAlmamaterLayout.createSequentialGroup()
+                .addGroup(jPanelAlmamaterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel37)
+                    .addComponent(jLabel38)
+                    .addComponent(jUnpaidAlmamater, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
+                .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonBayarAlmamater)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jFrameAlmamaterLayout = new javax.swing.GroupLayout(jFrameAlmamater.getContentPane());
+        jFrameAlmamater.getContentPane().setLayout(jFrameAlmamaterLayout);
+        jFrameAlmamaterLayout.setHorizontalGroup(
+            jFrameAlmamaterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jFrameAlmamaterLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelAlmamater, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(32, Short.MAX_VALUE))
+        );
+        jFrameAlmamaterLayout.setVerticalGroup(
+            jFrameAlmamaterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jFrameAlmamaterLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelAlmamater, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(104, Short.MAX_VALUE))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1024, 768));
 
@@ -2467,6 +2571,17 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
         jTextFieldCicilanHutangAmountSimple.setText(org.openide.util.NbBundle.getMessage(InputTransactionFrameSeparated.class, "InputTransactionFrameSeparated.jTextFieldCicilanHutangAmountSimple.text")); // NOI18N
         jTextFieldCicilanHutangAmountSimple.setPreferredSize(new java.awt.Dimension(6, 25));
 
+        jButtonAlmamater.setText(org.openide.util.NbBundle.getMessage(InputTransactionFrameSeparated.class, "InputTransactionFrameSeparated.jButtonAlmamater.text")); // NOI18N
+        jButtonAlmamater.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAlmamaterActionPerformed(evt);
+            }
+        });
+
+        jTextFieldAlmamaterAmountSimple.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0"))));
+        jTextFieldAlmamaterAmountSimple.setText(org.openide.util.NbBundle.getMessage(InputTransactionFrameSeparated.class, "InputTransactionFrameSeparated.jTextFieldAlmamaterAmountSimple.text")); // NOI18N
+        jTextFieldAlmamaterAmountSimple.setPreferredSize(new java.awt.Dimension(6, 25));
+
         javax.swing.GroupLayout jPanelMainLayout = new javax.swing.GroupLayout(jPanelMain);
         jPanelMain.setLayout(jPanelMainLayout);
         jPanelMainLayout.setHorizontalGroup(
@@ -2491,7 +2606,8 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
                             .addComponent(jButtonPVT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButtonTabungan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButtonSumbangan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButtonCicilanHutang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jButtonCicilanHutang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButtonAlmamater, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2512,7 +2628,8 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
                                     .addComponent(jTextFieldIDDAmountSimple, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
                                     .addComponent(jTextFieldBukuAmountSimple, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
                                     .addComponent(jTextFieldSeragamAmountSimple, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addComponent(jTextFieldCicilanHutangAmountSimple, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTextFieldCicilanHutangAmountSimple, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextFieldAlmamaterAmountSimple, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -2594,10 +2711,14 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
                                     .addComponent(jButtonCicilanHutang)
                                     .addComponent(jTextFieldCicilanHutangAmountSimple, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jButtonAlmamater)
+                                    .addComponent(jTextFieldAlmamaterAmountSimple, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButtonSubmit, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanelMainLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 546, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 577, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -2610,7 +2731,7 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanelMain, javax.swing.GroupLayout.PREFERRED_SIZE, 653, Short.MAX_VALUE)
+                .addComponent(jPanelMain, javax.swing.GroupLayout.PREFERRED_SIZE, 679, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -3332,6 +3453,20 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonBayarCicilanHutangActionPerformed
 
+    private void jTableAlmamaterPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jTableAlmamaterPropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTableAlmamaterPropertyChange
+
+    private void jButtonBayarAlmamaterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBayarAlmamaterActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonBayarAlmamaterActionPerformed
+
+    private void jButtonAlmamaterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAlmamaterActionPerformed
+        // TODO add your handling code here:
+        inputTransactionAlmamater =  new InputTransactionAlmamater(profil, this);
+        inputTransactionAlmamater.setVisible(true);
+    }//GEN-LAST:event_jButtonAlmamaterActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -3375,7 +3510,9 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable allTransactionTable;
+    private javax.swing.JButton jButtonAlmamater;
     private javax.swing.JButton jButtonAttribute;
+    private javax.swing.JButton jButtonBayarAlmamater;
     private javax.swing.JButton jButtonBayarBuku;
     private javax.swing.JButton jButtonBayarCicilanHutang;
     private javax.swing.JButton jButtonBayarIKS;
@@ -3416,6 +3553,7 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField jFormattedTextFieldIDDSaldo;
     private javax.swing.JFormattedTextField jFormattedTextFieldIDDSaldo1;
     private javax.swing.JFormattedTextField jFormattedTextFieldIDDSaldo2;
+    private javax.swing.JFrame jFrameAlmamater;
     private javax.swing.JFrame jFrameBuku;
     private javax.swing.JFrame jFrameCicilanHutang;
     private javax.swing.JFrame jFrameIDD;
@@ -3453,6 +3591,8 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -3484,6 +3624,7 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
     private javax.swing.JLabel jLableProfilTitle2;
     private javax.swing.JPanel jPaneBuku;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanelAlmamater;
     private javax.swing.JPanel jPanelCicilanHutang;
     private javax.swing.JPanel jPanelDialogBuku;
     private javax.swing.JPanel jPanelDialogIPP1;
@@ -3508,6 +3649,7 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane12;
+    private javax.swing.JScrollPane jScrollPane13;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -3516,6 +3658,7 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
+    private javax.swing.JTable jTableAlmamater;
     private javax.swing.JTable jTableBuku;
     private javax.swing.JTable jTableCicilanHutang;
     private javax.swing.JTable jTableDialogBuku;
@@ -3527,6 +3670,7 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
     private javax.swing.JTable jTableSeragam;
     private javax.swing.JTable jTableTunggakanAll;
     private javax.swing.JTextArea jTextAreaIDDNote;
+    public javax.swing.JFormattedTextField jTextFieldAlmamaterAmountSimple;
     public javax.swing.JFormattedTextField jTextFieldAttributeAmountSimple;
     public javax.swing.JFormattedTextField jTextFieldBukuAmountSimple;
     public javax.swing.JFormattedTextField jTextFieldCicilanHutangAmountSimple;
@@ -3567,6 +3711,7 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldTransactionSummaryNote;
     private javax.swing.JTextField jTextFieldTransactionSummaryNote1;
     private javax.swing.JTextField jTextFieldTransactionSummaryNote2;
+    private javax.swing.JTextField jUnpaidAlmamater;
     private javax.swing.JTextField jUnpaidBuku;
     private javax.swing.JTextField jUnpaidCicilanHutang;
     private javax.swing.JTextField jUnpaidIKS;
@@ -3765,6 +3910,30 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
                     Control.updateTSummary(this.transactionSummary);
                 }else{
                     System.out.println("Seragam transaction : nothing");
+                }
+            }
+        }
+        
+        //PART Almamater
+        if(almamaterSToDB != null){
+            for(int i = 0; i<almamaterSToDB.size(); i++){
+                if((Float)jTableAlmamater.getModel().getValueAt(i,5)>0f){
+                    almamater = almamaterSToDB.get(i);
+                    almamaterTDetailUUID = UUID.randomUUID();
+                    this.almamaterTransactionDetail = new AlmamaterTransactionDetail(almamaterTDetailUUID,almamater.id, clerk.id, transactionSummary.id, profil.noInduk, profil.currentLevel.level1, (Float)jTableAlmamater.getModel().getValueAt(i,5), TransactionDetail.PaymentMethod.CASH, new Kalender(), new Kalender(), almamater.note, false, false);
+                    Control.insertTDetail(TransactionDetail.Tipe.AlmamaterTransaction, this.almamaterTransactionDetail);
+                    this.almamaterTransactionDetail = Control.selectTDetail(TransactionDetail.Tipe.AlmamaterTransaction, TransactionDetail.uuidColName, false, almamaterTDetailUUID.toString());
+                    almamater.transactDetailIDs.add(this.almamaterTransactionDetail.id);
+                    Almamater temp = Control.selectIuran(Iuran.Tipe.Almamater, almamater.id);
+                    almamater.amount = temp.amount;
+                    almamater.debt -= this.almamaterTransactionDetail.amount;
+                    almamater.transactDetailIDs.addAll(temp.transactDetailIDs);
+                    Control.updateIuran(Iuran.Tipe.Almamater, almamater);
+                    this.transactionSummary = Control.selectTSummary(this.transactionSummary.id);
+                    //this.transactionSummary.totalAmount = (Float)jTableAlmamater.getModel().getValueAt(i,3);
+                    Control.updateTSummary(this.transactionSummary);
+                }else{
+                    System.out.println("Almamater transaction : nothing");
                 }
             }
         }
@@ -5129,7 +5298,7 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
         }
        }
        tahunAjaran.add(0, "Total Tunggakan");
-       Object[][] data = new Object[17][tahunAjaran.size()];
+       Object[][] data = new Object[18][tahunAjaran.size()];
        Float[] tunggakanPerYear = new Float[tahunAjaran.size()];
        for(int j = 0 ; j < tahunAjaran.size(); j++){
            tunggakanPerYear[j] = 0f;
@@ -5507,15 +5676,40 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
        tungs.setValue(temp);
        data[15][0]=tungs.getText();
        
+        //Almamater
+       if(tAlmamaters != null){
+        for(int j = 0 ; j < tahunAjaranInt.size(); j++){
+            for(int k = 0 ; k < tAlmamaters.size(); k++){
+                if(tAlmamaters.get(k).chargedLevel.tahun == tahunAjaranInt.get(j)){
+                    temp += tAlmamaters.get(k).debt;
+                    tungs.setValue(temp);
+                    data[16][j+1] = tungs.getText();
+                    tunggakanPerYear[j] += temp;
+                }
+            }
+            temp = 0f;
+        }
+        for(int j = 0 ; j< tAlmamaters.size(); j++){
+            temp += tAlmamaters.get(j).debt;
+        }
+        tungs.setValue(temp);
+        data[16][0]=tungs.getText();
+        temp =0f;
+       }else{
+           for(int j = 0 ; j < tahunAjaranInt.size(); j++){
+               data[16][j+1] = 0;
+           }
+       }
+       
        temp =0f;
        
        for(int j = 0 ; j < tahunAjaranInt.size(); j++){
            tungs.setValue(tunggakanPerYear[j]);
-           data[16][j+1] = tungs.getText();
+           data[17][j+1] = tungs.getText();
            temp += tunggakanPerYear[j];
        }
        tungs.setValue(temp);
-       data[16][0] = tungs.getText();
+       data[17][0] = tungs.getText();
        
        Object[] columnNames = tahunAjaran.toArray();
        TableModel tm = new DefaultTableModel(data, columnNames){

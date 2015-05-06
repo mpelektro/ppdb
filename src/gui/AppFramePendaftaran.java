@@ -49,6 +49,7 @@ public class AppFramePendaftaran extends javax.swing.JFrame {
     private IPSP paramIPSP;
     private ArrayList<IKS> paramIKSs;
     private ArrayList<Seragam> paramSeragams;
+    private ArrayList<Almamater> paramAlmamaters;
     private IPSB paramIPSB;
     private ArrayList<Buku> paramBukus;
     private ArrayList<ILL> paramILLs;
@@ -609,6 +610,10 @@ public class AppFramePendaftaran extends javax.swing.JFrame {
             profil.noInduk = noInduk.isEmpty()?null:noInduk;
             tableModelInitialSearch = buildInitialTableModel(profil);
             jTableInitialSearch.setModel(tableModelInitialSearch);
+            
+            //empty tunggakan model
+            //tableModelTunggakanProfil = buildTunggakanProfilTableModel(null);
+            selectedProfileName.setText("");
         } catch (SQLException ex) {
             Exceptions.printStackTrace(ex);
             JOptionPane.showMessageDialog(rootPane, "Connection to database error!\r\n".concat(ex.toString()));
@@ -655,7 +660,7 @@ public class AppFramePendaftaran extends javax.swing.JFrame {
         // TODO add your handling code here:
         //new InputTransactionFrameSeparated(this.clerk, this.profil).setVisible(true);
         //new InputTransactionFrameSeparated(this.clerk, this.profil, paramIPSP).setVisible(true);
-        new InputTransactionFrameSeparated(this, this.clerk, this.profil,paramIPPs, paramIPSP, paramSeragams, paramBukus, paramIKSs, paramILLs, paramIPSB, paramIUA, paramIUSs, paramOSISs, paramAttributes, paramPVTs, paramTabungans, paramSumbangans, paramCicilanHutangs).setVisible(true);
+        new InputTransactionFrameSeparated(this, this.clerk, this.profil,paramIPPs, paramIPSP, paramSeragams, paramBukus, paramIKSs, paramILLs, paramIPSB, paramIUA, paramIUSs, paramOSISs, paramAttributes, paramPVTs, paramTabungans, paramSumbangans, paramCicilanHutangs, paramAlmamaters).setVisible(true);
     }//GEN-LAST:event_jButtonTransaksiActionPerformed
 
     private void jButtonSettingIuranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSettingIuranActionPerformed
@@ -771,7 +776,7 @@ public class AppFramePendaftaran extends javax.swing.JFrame {
             TransactionSummary tsum = Control.selectTSummary(tSumID);
             Profil tempProfil = Control.selectProfil(tsum.noInduk);
             TableModel tm = buildTunggakanProfilTableModel(tempProfil);
-            InputTransactionFrameSeparated itfs = new InputTransactionFrameSeparated(this, this.clerk, tempProfil,paramIPPs, paramIPSP, paramSeragams, paramBukus, paramIKSs, paramILLs, paramIPSB, paramIUA, paramIUSs, paramOSISs, paramAttributes, paramPVTs, paramTabungans, paramSumbangans, paramCicilanHutangs);
+            InputTransactionFrameSeparated itfs = new InputTransactionFrameSeparated(this, this.clerk, tempProfil,paramIPPs, paramIPSP, paramSeragams, paramBukus, paramIKSs, paramILLs, paramIPSB, paramIUA, paramIUSs, paramOSISs, paramAttributes, paramPVTs, paramTabungans, paramSumbangans, paramCicilanHutangs, paramAlmamaters);
             try {
                 itfs.printBuktiPembayaran(tsum, tm, totalDebt);
             } catch (JRException ex) {
@@ -1100,6 +1105,23 @@ public class AppFramePendaftaran extends javax.swing.JFrame {
             if(entry.getValue().debt > 0){
                 tunggakans.add(new Tunggakan("Seragam", entry.getValue().debt, entry.getValue().transactName));
                 paramSeragams.add(entry.getValue());
+            }
+            j++;
+        }
+       }
+       
+       //Almamater
+       paramAlmamaters =  new ArrayList<>();
+       Set<Almamater> almamaterFilters = new HashSet<>();
+       almamaterFilters.add(new Almamater(profil.noInduk,null, null, 0F, null));
+       Map<Long, Almamater> srmAlmamater = new HashMap<>();
+       srmAlmamater = Control.exactFilterSelectIurans(Iuran.Tipe.Almamater, almamaterFilters);
+       j = 0;
+       if(srmAlmamater.size() > 0){
+        for(Map.Entry<Long, Almamater> entry: srmAlmamater.entrySet()){
+            if(entry.getValue().debt > 0){
+                tunggakans.add(new Tunggakan("Almamater", entry.getValue().debt, entry.getValue().transactName));
+                paramAlmamaters.add(entry.getValue());
             }
             j++;
         }

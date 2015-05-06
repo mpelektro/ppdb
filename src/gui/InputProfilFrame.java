@@ -162,7 +162,7 @@ public class InputProfilFrame extends javax.swing.JFrame {
 
         jPanel3.setMaximumSize(new java.awt.Dimension(700, 800));
         jPanel3.setMinimumSize(new java.awt.Dimension(447, 530));
-        jPanel3.setName("Konfirmasi Input Siswa");
+        jPanel3.setName("Konfirmasi Input Siswa"); // NOI18N
         jPanel3.setPreferredSize(new java.awt.Dimension(447, 580));
         jPanel3.setRequestFocusEnabled(false);
 
@@ -219,8 +219,8 @@ public class InputProfilFrame extends javax.swing.JFrame {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jTempatLahirTextField, org.jdesktop.beansbinding.ELProperty.create("${text}"), jTempatLahirTextField1, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
-        jAlamatTextArea1.setColumns(20);
         jAlamatTextArea1.setEditable(false);
+        jAlamatTextArea1.setColumns(20);
         jAlamatTextArea1.setRows(5);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jAlamatTextArea, org.jdesktop.beansbinding.ELProperty.create("${text}"), jAlamatTextArea1, org.jdesktop.beansbinding.BeanProperty.create("text"));
@@ -570,7 +570,7 @@ public class InputProfilFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Input Siswa");
 
-        jNomorIndukTextField.setName("Nomor Induk");
+        jNomorIndukTextField.setName("Nomor Induk"); // NOI18N
         jNomorIndukTextField.setText(profil!= null ? profil.noInduk:"");
         jNomorIndukTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -590,7 +590,7 @@ public class InputProfilFrame extends javax.swing.JFrame {
 
         jNamaLabel.setText("Nama");
 
-        jNamaTextField.setName("Nama");
+        jNamaTextField.setName("Nama"); // NOI18N
         jNamaTextField.setText(profil!=null?profil.biodata.nama:"");
         jNamaTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -622,7 +622,7 @@ public class InputProfilFrame extends javax.swing.JFrame {
 
         jAlamatLabel.setText("Alamat");
 
-        jTempatLahirTextField.setName("Tempat Lahir");
+        jTempatLahirTextField.setName("Tempat Lahir"); // NOI18N
         jTempatLahirTextField.setText(profil!=null?profil.biodata.tempatLahir:"");
         jTempatLahirTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -635,9 +635,12 @@ public class InputProfilFrame extends javax.swing.JFrame {
 
         jAlamatTextArea.setColumns(20);
         jAlamatTextArea.setRows(5);
-        jAlamatTextArea.setName("Alamat");
+        jAlamatTextArea.setName("Alamat"); // NOI18N
         jAlamatTextArea.setText(profil!=null?profil.biodata.alamat:"");
         jAlamatTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jAlamatTextAreaKeyPressed(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jAlamatTextAreaKeyReleased(evt);
             }
@@ -649,7 +652,7 @@ public class InputProfilFrame extends javax.swing.JFrame {
 
         jNamaAyahLabel.setText("Nama Ayah");
 
-        jNamaAyahTextField.setName("Nama Ayah");
+        jNamaAyahTextField.setName("Nama Ayah"); // NOI18N
         jNamaAyahTextField.setText(profil!=null?profil.biodata.namaAyah:"");
         jNamaAyahTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -659,7 +662,7 @@ public class InputProfilFrame extends javax.swing.JFrame {
 
         jNamaIbuLabel.setText("Nama Ibu");
 
-        jNamaIbuTextField.setName("Nama Ibu\n");
+        jNamaIbuTextField.setName("Nama Ibu\n"); // NOI18N
         jNamaIbuTextField.setText(profil!=null?profil.biodata.namaIbu:"");
         jNamaIbuTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -669,7 +672,7 @@ public class InputProfilFrame extends javax.swing.JFrame {
 
         jTelepon1Label.setText("Telepon 1");
 
-        jTelepon1TextField.setName("Telepon 1");
+        jTelepon1TextField.setName("Telepon 1"); // NOI18N
         jTelepon1TextField.setText(profil!=null?profil.biodata.telpon1:"");
         jTelepon1TextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -687,7 +690,7 @@ public class InputProfilFrame extends javax.swing.JFrame {
 
         jTelepon2Label.setText("Telepon 2");
 
-        jTelepon2TextField.setName("Telepon 2");
+        jTelepon2TextField.setName("Telepon 2"); // NOI18N
         jTelepon2TextField.setText(profil!=null?profil.biodata.telpon2:"");
         jTelepon2TextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -795,7 +798,7 @@ public class InputProfilFrame extends javax.swing.JFrame {
 
     jAsalSekolahLabel.setText("Asal Sekolah");
 
-    jAsalSekolahTextField.setName("AsalSekolah");
+    jAsalSekolahTextField.setName("AsalSekolah"); // NOI18N
     jAsalSekolahTextField.setText(profil!=null?profil.biodata.asalSekolah:"");
     jAsalSekolahTextField.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1211,6 +1214,11 @@ d = StringValidators.trimString(ValidatorUtils.merge(
         // TODO add your handling code here:
     }//GEN-LAST:event_jAsalSekolahTextField1ActionPerformed
 
+    private void jAlamatTextAreaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jAlamatTextAreaKeyPressed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jAlamatTextAreaKeyPressed
+
     /**
      * @param args the command line arguments
      */
@@ -1365,8 +1373,7 @@ d = StringValidators.trimString(ValidatorUtils.merge(
                 , (pelajar.Level.Level2)jComboBoxTingkatKelas1.getSelectedItem()
                 , (pelajar.Level.Level3)jComboBoxTingkatSubKelas1.getSelectedItem()
                 , dateChooserComboTanggalMasuk1.getSelectedDate().get(Calendar.YEAR));
-        Profil profilData = new Profil(jNomorIndukTextField1.getText(), level, biodata, new sak.Kalender(dateChooserComboTanggalMasuk1.getSelectedDate().getTime()), null);
-
+        Profil profilData = new Profil(jNomorIndukTextField1.getText(), level, biodata, new sak.Kalender(dateChooserComboTanggalMasuk1.getSelectedDate().getTime()), null, new sak.Kalender(Calendar.getInstance().getTime()));
         Control.insertProfil(profilData);
         
         
@@ -1376,47 +1383,49 @@ d = StringValidators.trimString(ValidatorUtils.merge(
             PASB pasb = new PASB(profilData.noInduk, profilData.currentLevel, "Administrasi PASB", 0f, "PASB");
             Attribute attribute = new Attribute(profilData.noInduk, profilData.currentLevel, "MOPDB, Pas Photo, Kartu Pelajar, Sampul Laporan Pendidikan", 0f, "");
             Seragam seragam = new Seragam(profilData.noInduk, profilData.currentLevel, "SERAGAM", 0f, "SERAGAM");
+            Almamater almamater = new Almamater(profilData.noInduk, profilData.currentLevel, "ALMAMATER", 0f, "ALMAMATER");
             ArrayList<Entry> entryIKS = new ArrayList<>();
             ArrayList<Entry> entryIPP = new ArrayList<>();
             ArrayList<Entry> entryOSIS = new ArrayList<>();
             ArrayList<Entry> entryPVT = new ArrayList<>();
             switch(profilData.currentLevel.level1){
                 case SMA:
-                    ipsp.amount = 3000000f;
+                    ipsp.amount = 3500000f;
                     pasb.amount = 200000f;
                     attribute.amount = 310000f;
-                    seragam.amount = 315000f;
-                    entryIKS.add(new Entry(0, 350000f));
-                    entryOSIS.add(new Entry(0, 225000f));
+                    seragam.amount = 400000f;
+                    entryIKS.add(new Entry(0, 400000f));
+                    entryOSIS.add(new Entry(0, 250000f));
                     for(int i = 0; i<12 ; i++){
-                        entryIPP.add(new Entry(i,325000f));
+                        entryIPP.add(new Entry(i,380000f));
                     }
                     break;
                 case SMP:
-                    ipsp.amount = 1000000f;
+                    ipsp.amount = 1500000f;
                     pasb.amount = 100000f;
-                    attribute.amount = 160000f;
-                    seragam.amount = 240000f;
+                    attribute.amount = 100000f;
+                    seragam.amount = 350000f;
                     entryIKS.add(new Entry(0, 200000f));
                     entryOSIS.add(new Entry(0, 150000f));
                     for(int i = 0; i<12 ; i++){
-                        entryIPP.add(new Entry(i,200000f));
+                        entryIPP.add(new Entry(i,225000f));
                     }
 
                     break;
                 case SMK:
                     ipsp.amount = 2000000f;
                     pasb.amount = 150000f;
-                    attribute.amount = 170000f;
-                    seragam.amount = 330000f;
+                    attribute.amount = 100000f;
+                    seragam.amount = 360000f;
                     entryIKS.add(new Entry(0, 300000f));
                     entryOSIS.add(new Entry(0, 225000f));
                     entryPVT.add(new Entry(0, 720000f));
+                    almamater.amount = 250000f;
                     PVT pvt = new PVT(profilData.noInduk, profilData.currentLevel, entryPVT);
                     pvt.entries.get(0).debt = pvt.entries.get(0).amount;
                     Control.insertIuran(Iuran.Tipe.PVT, pvt);
                     for(int i = 0; i<12 ; i++){
-                        entryIPP.add(new Entry(i,250000f));
+                        entryIPP.add(new Entry(i,275000f));
                     }
                     break;
                 default:
@@ -1433,7 +1442,7 @@ d = StringValidators.trimString(ValidatorUtils.merge(
             pasb.debt = pasb.amount;
             attribute.debt = attribute.amount;
             seragam.debt = seragam.amount;
-            
+            almamater.debt = almamater.amount;
             attribute.note =attribute.transactName;
             
             Control.insertIuran(Iuran.Tipe.IPSP, ipsp);
@@ -1443,6 +1452,7 @@ d = StringValidators.trimString(ValidatorUtils.merge(
             Control.insertIuran(Iuran.Tipe.IKS, iks);
             Control.insertIuran(Iuran.Tipe.IPP, ipp);
             Control.insertIuran(Iuran.Tipe.OSIS, osis);
+            Control.insertIuran(Iuran.Tipe.Almamater, almamater);
         }
         //end autotarget iuran
     }
@@ -1463,7 +1473,7 @@ d = StringValidators.trimString(ValidatorUtils.merge(
                 , (pelajar.Level.Level2)jComboBoxTingkatKelas1.getSelectedItem()
                 , (pelajar.Level.Level3)jComboBoxTingkatSubKelas1.getSelectedItem()
                 , dateChooserComboTanggalMasuk1.getSelectedDate().get(Calendar.YEAR));
-        Profil profilData = new Profil(jNomorIndukTextField1.getText(), level, biodata, new sak.Kalender(dateChooserComboTanggalMasuk1.getSelectedDate().getTime()), null);
+        Profil profilData = new Profil(jNomorIndukTextField1.getText(), level, biodata, new sak.Kalender(dateChooserComboTanggalMasuk1.getSelectedDate().getTime()), null, new sak.Kalender(Calendar.getInstance().getTime()));
         Control.updateProfil(profilData);
     }
     
@@ -1483,7 +1493,7 @@ d = StringValidators.trimString(ValidatorUtils.merge(
                 , (pelajar.Level.Level2)jComboBoxTingkatKelas1.getSelectedItem()
                 , (pelajar.Level.Level3)jComboBoxTingkatSubKelas1.getSelectedItem()
                 , dateChooserComboTanggalMasuk1.getSelectedDate().get(Calendar.YEAR));
-        Profil temp = new Profil(jNomorIndukTextField1.getText(), level, biodata, new sak.Kalender(dateChooserComboTanggalMasuk1.getSelectedDate().getTime()), null);
+        Profil temp = new Profil(jNomorIndukTextField1.getText(), level, biodata, new sak.Kalender(dateChooserComboTanggalMasuk1.getSelectedDate().getTime()), null, new sak.Kalender(Calendar.getInstance().getTime()));
         profilList.add(temp);
         return true;
     }

@@ -15,6 +15,12 @@ public class Profil extends KasirObject<Profil,Profil,String>{
     public static final String tanggalMasukColName = "TanggalMasuk";
     public static final String tanggalLulusColName = "TanggalLulus";
     
+    //special for ppdb
+    public static final String gelombangColName = "Gelombang";
+    public static final String totalIuranColName = "TotalIuran";
+    public static final String statusPendaftaranColName = "StatusPendaftaran";
+    public static final String lastUpdateDateColName = "LastUpdateDate";
+    
     public String noInduk; //db-primary-key
     public Level currentLevel;
     public Biodata biodata;
@@ -22,27 +28,31 @@ public class Profil extends KasirObject<Profil,Profil,String>{
     public Kalender tanggalLulus;
     
     //special for ppdb
-    public Kalender lastUpdateDate;
+    
     public enum Gelombang{GELOMBANG_1,GELOMBANG_2};
     public Gelombang gelombang;
     public float totalIuran;
+    public enum StatusPendaftaran{DAFTAR, PROSES, LUNAS, BATAL};
+    public StatusPendaftaran statusPendaftaran;
+    public Kalender lastUpdateDate;
     //create filter
-    public Profil(String noInduk, Level curLV, Biodata bio, Kalender tglMasuk, Kalender tglLulus) {
+    public Profil(String noInduk, Level curLV, Biodata bio, Kalender tglMasuk, Kalender tglLulus, Kalender lastUpdateDate) {
         this.noInduk = noInduk; currentLevel = curLV;
         biodata = bio;  tanggalMasuk = tglMasuk;
         tanggalLulus = tglLulus;
+        this.lastUpdateDate = lastUpdateDate;
     }
     
     //create for insertion
-    public Profil(String noInduk, String nama, Biodata.Kelamin kelamin, Biodata.Agama agama, String asalSekolah, String alamat, String tlp1, String tlp2, Gelombang gelombang){
-        this(noInduk, null, new Biodata(nama, kelamin, agama, asalSekolah, alamat, tlp1), null, null);
+    public Profil(String noInduk, String nama, Biodata.Kelamin kelamin, Biodata.Agama agama, String asalSekolah, String alamat, String tlp1, String tlp2, Gelombang gelombang, float totalIuran, StatusPendaftaran statusPendaftaran, Kalender lastUpdateDate){
+        this(noInduk, null, new Biodata(nama, kelamin, agama, asalSekolah, alamat, tlp1), null, null, lastUpdateDate);
     }
 
     //create from db
     public Profil() {}
     
     public Profil(Profil profil) {
-        this(profil.noInduk, profil.currentLevel, profil.biodata, profil.tanggalMasuk, profil.tanggalLulus);
+        this(profil.noInduk, profil.currentLevel, profil.biodata, profil.tanggalMasuk, profil.tanggalLulus, profil.lastUpdateDate);
     }
     
 
@@ -84,7 +94,28 @@ public class Profil extends KasirObject<Profil,Profil,String>{
         profil.biodata = Biodata.fromResultSet(rs);
         profil.tanggalMasuk = Kalender.fromResultSet(rs, tanggalMasukColName);
         profil.tanggalLulus = Kalender.fromResultSet(rs, tanggalLulusColName);
-        
+        String tmpGelombang = rs.getString(gelombangColName);
+        if(tmpGelombang != null){
+            if(tmpGelombang.equalsIgnoreCase("GELOMBANG_1")){
+                profil.gelombang = Gelombang.GELOMBANG_1;
+            }else if(tmpGelombang.equalsIgnoreCase("GELOMBANG_2")){
+                 profil.gelombang = Gelombang.GELOMBANG_2;
+            }
+        }
+        profil.totalIuran = rs.getFloat(totalIuranColName);
+        String tmpStatusPendaftaran = rs.getString(statusPendaftaranColName);
+        if(tmpStatusPendaftaran != null){
+            if(tmpStatusPendaftaran.equalsIgnoreCase("DAFTAR")){
+                profil.statusPendaftaran = StatusPendaftaran.DAFTAR;
+            }else if(tmpStatusPendaftaran.equalsIgnoreCase("PROSES")){
+                profil.statusPendaftaran = StatusPendaftaran.PROSES;
+            }else if(tmpStatusPendaftaran.equalsIgnoreCase("LUNAS")){
+                profil.statusPendaftaran = StatusPendaftaran.LUNAS;
+            }else if (tmpStatusPendaftaran.equalsIgnoreCase("BATAL")){
+                profil.statusPendaftaran = StatusPendaftaran.BATAL;
+            }
+        }
+        profil.lastUpdateDate = Kalender.fromResultSet(rs, lastUpdateDateColName);
         if(profil.isDBValid())
             return profil;
         else
@@ -140,6 +171,14 @@ public class Profil extends KasirObject<Profil,Profil,String>{
             tanggalMasuk.flushResultSet(rs, tanggalMasukColName);
         if(tanggalLulus != null)
             tanggalLulus.flushResultSet(rs, tanggalLulusColName);
+        if(gelombang != null)
+            rs.updateString(gelombangColName, gelombang.toString());
+        if(totalIuran > 0)
+            rs.updateFloat(totalIuranColName, totalIuran);
+        if(statusPendaftaran != null)
+            rs.updateString(statusPendaftaranColName, statusPendaftaran.toString());
+        if(lastUpdateDate != null)
+            lastUpdateDate.flushResultSet(rs, lastUpdateDateColName);
         return true;
     }
     
@@ -220,7 +259,12 @@ public class Profil extends KasirObject<Profil,Profil,String>{
             
         if (tanggalLulus != null)
                 whereClause.add(tanggalLulusColName + " LIKE '%" + tanggalLulus.asWhereClause(true) + "%'");
-
+        if (gelombang != null)
+                whereClause.add(gelombangColName + " = '" + gelombang + "'");
+        if (statusPendaftaran != null)
+                whereClause.add(statusPendaftaranColName + " = '" + statusPendaftaran + "'");
+        if (lastUpdateDate != null)
+                whereClause.add(lastUpdateDateColName + " LIKE '%" + lastUpdateDate.asWhereClause(true) + "%'");
         return whereClause.isEmpty()? "" : StringUtils.join(whereClause, " AND ");
     }
     public String asWhereClauseExact() {
@@ -243,7 +287,12 @@ public class Profil extends KasirObject<Profil,Profil,String>{
             
         if (tanggalLulus != null)
                 whereClause.add(tanggalLulusColName + " = '" + tanggalLulus.asWhereClause(true) + "'");
-
+        if (gelombang != null)
+                whereClause.add(gelombangColName + " = '" + gelombang + "'");
+        if (statusPendaftaran != null)
+                whereClause.add(statusPendaftaranColName + " = '" + statusPendaftaran + "'");
+        if (lastUpdateDate != null)
+                whereClause.add(lastUpdateDateColName + " LIKE '" + lastUpdateDate.asWhereClause(true) + "'");
         return whereClause.isEmpty()? "" : StringUtils.join(whereClause, " AND ");
     }
     
