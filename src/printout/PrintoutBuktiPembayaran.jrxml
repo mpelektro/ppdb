@@ -38,6 +38,8 @@
 	<parameter name="Param_Tunggakan_IPP_Each_Amount" class="java.lang.String"/>
 	<parameter name="Param_Tunggakan_Seragam" class="java.lang.String"/>
 	<parameter name="Param_Tunggakan_Seragam_Amount" class="java.lang.Float"/>
+        <parameter name="Param_Tunggakan_Almamater" class="java.lang.String"/>
+	<parameter name="Param_Tunggakan_Almamater_Amount" class="java.lang.Float"/>
 	<parameter name="Param_Tunggakan_Buku" class="java.lang.String"/>
 	<parameter name="Param_Tunggakan_Buku_Amount" class="java.lang.Float"/>
 	<parameter name="Param_Tunggakan_IPSP" class="java.lang.String"/>
@@ -429,6 +431,16 @@ WHERE
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "PrintoutBuktiPembayaran_Attribute.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+                <band height="12" splitType="Prevent">
+			<subreport>
+				<reportElement x="0" y="0" width="377" height="12" isRemoveLineWhenBlank="true" uuid="80967a56-3bcf-4cd7-8e62-0855833fe96d"/>
+				<subreportParameter name="Param_Almamater_TransactionSummary_ID">
+					<subreportParameterExpression><![CDATA[$P{Param_TransactionSummary_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "PrintoutBuktiPembayaran_Almamater.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 		<band height="29">
