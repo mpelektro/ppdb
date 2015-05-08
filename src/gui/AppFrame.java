@@ -595,14 +595,14 @@ public class AppFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1131, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 692, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 68, Short.MAX_VALUE))
+                .addGap(0, 55, Short.MAX_VALUE))
         );
 
         pack();
@@ -1147,6 +1147,23 @@ public class AppFrame extends javax.swing.JFrame {
             if(entry.getValue().debt > 0){
                 tunggakans.add(new Tunggakan("Seragam", entry.getValue().debt, entry.getValue().transactName));
                 paramSeragams.add(entry.getValue());
+            }
+            j++;
+        }
+       }
+       
+       //Almamater
+       paramAlmamaters =  new ArrayList<>();
+       Set<Almamater> almamaterFilters = new HashSet<>();
+       almamaterFilters.add(new Almamater(profil.noInduk,null, null, 0F, null));
+       Map<Long, Almamater> srmAlmamater = new HashMap<>();
+       srmAlmamater = Control.exactFilterSelectIurans(Iuran.Tipe.Almamater, almamaterFilters);
+       j = 0;
+       if(srmAlmamater.size() > 0){
+        for(Map.Entry<Long, Almamater> entry: srmAlmamater.entrySet()){
+            if(entry.getValue().debt > 0){
+                tunggakans.add(new Tunggakan("Almamater", entry.getValue().debt, entry.getValue().transactName));
+                paramAlmamaters.add(entry.getValue());
             }
             j++;
         }

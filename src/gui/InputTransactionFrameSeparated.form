@@ -69,6 +69,13 @@
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
+                  <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jPanelDialogAlmamater" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace pref="1055" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
@@ -93,6 +100,13 @@
                           <Component id="jButtonDialogCancel" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="188" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace pref="439" max="32767" attributes="0"/>
+                          <Component id="jPanelDialogAlmamater" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="212" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -535,6 +549,59 @@
                     </Property>
                   </Properties>
                 </Component>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JPanel" name="jPanelDialogAlmamater">
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jLabel39" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jScrollPane14" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="jLabel39" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="jScrollPane14" min="-2" pref="97" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JLabel" name="jLabel39">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                      <ResourceString bundle="gui/Bundle.properties" key="InputTransactionFrameSeparated.jLabel39.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+                    </Property>
+                  </Properties>
+                </Component>
+                <Container class="javax.swing.JScrollPane" name="jScrollPane14">
+                  <AuxValues>
+                    <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+                  </AuxValues>
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                  <SubComponents>
+                    <Component class="javax.swing.JTable" name="jTableDialogAlmamater">
+                      <Properties>
+                        <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                          <Connection code="tableModelAlmamater" type="code"/>
+                        </Property>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="jTableDialogAlmamaterPropertyChange"/>
+                      </Events>
+                    </Component>
+                  </SubComponents>
+                </Container>
               </SubComponents>
             </Container>
           </SubComponents>
@@ -2463,14 +2530,14 @@
                 <Component class="javax.swing.JTable" name="jTableAlmamater">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="tableModelSeragam" type="code"/>
+                      <Connection code="tableModelAlmamater" type="code"/>
                     </Property>
                   </Properties>
                   <Events>
                     <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="jTableAlmamaterPropertyChange"/>
                   </Events>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="try{&#xa;tableModelSeragam = buildSeragamTableModel(profil);&#xa;}catch(Exception e){&#xa;e.printStackTrace();&#xa;}"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="try{&#xa;tableModelAlmamater = buildAlmamaterTableModel(profil);&#xa;}catch(Exception e){&#xa;e.printStackTrace();&#xa;}"/>
                   </AuxValues>
                 </Component>
               </SubComponents>
@@ -2554,7 +2621,7 @@
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="setContentPane(validationPanel);&#xa;validationPanel.setInnerComponent(jPanelMain);&#xa;Validator&lt;String&gt; d = StringValidators.trimString(ValidatorUtils.merge(&#xa;            StringValidators.REQUIRE_VALID_NUMBER,&#xa;            StringValidators.REQUIRE_NON_NEGATIVE_NUMBER,&#xa;            StringValidators.numberRange(minIpsp, maxIpsp)));&#xa;validationPanel.getValidationGroup().add(jTextFieldIPSPAmount, d);&#xa;&#xa;calculateTotalTunggakan(profil);&#xa;&#xa;//jButtonSubmit.setEnabled(false);"/>
-        <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="DefaultComboBoxModel paymentMethodComboBoxModel = new DefaultComboBoxModel(TransactionDetail.PaymentMethod.values());&#xa;tableModelSeragam = new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;        {null, null, null, null},&#xa;        {null, null, null, null},&#xa;        {null, null, null, null},&#xa;        {null, null, null, null},&#xa;        {null, null, null, null}&#xa;    },&#xa;    new String [] {&#xa;        &quot;Seragam&quot;, &quot;Jumlah&quot;, &quot;Catatan&quot;, &quot;CheckBox&quot;&#xa;    }&#xa;);&#xa;&#xa;tableModelBuku = new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;        {null, null, null, null},&#xa;        {null, null, null, null},&#xa;        {null, null, null, null},&#xa;        {null, null, null, null},&#xa;        {null, null, null, null}&#xa;    },&#xa;    new String [] {&#xa;        &quot;Buku&quot;, &quot;Jumlah&quot;, &quot;Catatan&quot;, &quot;CheckBox&quot;&#xa;    }&#xa;);&#xa;&#xa;tableModelIPP = new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;        {&quot;JULI&quot;, null},&#xa;        {&quot;AGUSTUS&quot;, null},&#xa;        {&quot;SEPTEMBER&quot;, null},&#xa;        {&quot;OKTOBER&quot;, null},&#xa;        {&quot;NOVEMBER&quot;, null},&#xa;        {&quot;DESEMBER&quot;, null},&#xa;        {&quot;JANUARI&quot;, null},&#xa;        {&quot;FEBRUARI&quot;, null},&#xa;        {&quot;MARET&quot;, null},&#xa;        {&quot;APRIL&quot;, null},&#xa;        {&quot;MEI&quot;, null},&#xa;        {&quot;JUNI&quot;, null}&#xa;        &#xa;    },&#xa;    new String [] {&#xa;        &quot;Bulan&quot;, &quot;Biaya IPP&quot;&#xa;    }&#xa;    ){&#xa;        Class[] types = new Class [] {&#xa;            java.lang.String.class, java.lang.Float.class&#xa;        };&#xa;&#xa;        boolean[] canEdit = new boolean [] {&#xa;            false, true&#xa;        };&#xa;        @Override&#xa;        public Class getColumnClass(int columnIndex) {&#xa;            return types [columnIndex];&#xa;        }&#xa;};&#xa;&#xa;tableModelCicilanHutang = new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;        {&quot;JULI&quot;, null},&#xa;        {&quot;AGUSTUS&quot;, null},&#xa;        {&quot;SEPTEMBER&quot;, null},&#xa;        {&quot;OKTOBER&quot;, null},&#xa;        {&quot;NOVEMBER&quot;, null},&#xa;        {&quot;DESEMBER&quot;, null},&#xa;        {&quot;JANUARI&quot;, null},&#xa;        {&quot;FEBRUARI&quot;, null},&#xa;        {&quot;MARET&quot;, null},&#xa;        {&quot;APRIL&quot;, null},&#xa;        {&quot;MEI&quot;, null},&#xa;        {&quot;JUNI&quot;, null}&#xa;        &#xa;    },&#xa;    new String [] {&#xa;        &quot;Bulan&quot;, &quot;Biaya Cicilan Hutang&quot;&#xa;    }&#xa;    ){&#xa;        Class[] types = new Class [] {&#xa;            java.lang.String.class, java.lang.Float.class&#xa;        };&#xa;&#xa;        boolean[] canEdit = new boolean [] {&#xa;            false, true&#xa;        };&#xa;        @Override&#xa;        public Class getColumnClass(int columnIndex) {&#xa;            return types [columnIndex];&#xa;        }&#xa;};&#xa;&#xa;tableModelIUS = new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;        {&quot;SEMESTER 1&quot;, null},&#xa;        {&quot;SEMESTER 2&quot;, null}&#xa;    },&#xa;    new String [] {&#xa;        &quot;Bulan&quot;, &quot;Biaya IUS&quot;&#xa;    }&#xa;    ){&#xa;        Class[] types = new Class [] {&#xa;            java.lang.String.class, java.lang.Float.class&#xa;        };&#xa;&#xa;        boolean[] canEdit = new boolean [] {&#xa;            false, true&#xa;        };&#xa;        @Override&#xa;        public Class getColumnClass(int columnIndex) {&#xa;            return types [columnIndex];&#xa;        }&#xa;};&#xa;&#xa;tableModelIKS = new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;        {&quot;Tahun Pertama&quot;, null},&#xa;        {&quot;Tahun Kedua&quot;, null},&#xa;        {&quot;Tahun Ketiga&quot;, null}&#xa;    },&#xa;    new String [] {&#xa;        &quot;Tahun&quot;, &quot;Biaya IKS&quot;&#xa;    }&#xa;    ){&#xa;        Class[] types = new Class [] {&#xa;            java.lang.String.class, java.lang.Float.class&#xa;        };&#xa;&#xa;        boolean[] canEdit = new boolean [] {&#xa;            false, true&#xa;        };&#xa;        @Override&#xa;        public Class getColumnClass(int columnIndex) {&#xa;            return types [columnIndex];&#xa;        }&#xa;};&#xa;&#xa;tunggakanAllTahunTableModel = new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;        {&quot;Tahun Pertama&quot;, null},&#xa;        {&quot;Tahun Kedua&quot;, null},&#xa;        {&quot;Tahun Ketiga&quot;, null}&#xa;    },&#xa;    new String [] {&#xa;        &quot;Tahun&quot;, &quot;Tunggakan&quot;&#xa;    }&#xa;    ){&#xa;        Class[] types = new Class [] {&#xa;            java.lang.String.class, java.lang.Float.class&#xa;        };&#xa;&#xa;        boolean[] canEdit = new boolean [] {&#xa;            false, true&#xa;        };&#xa;        @Override&#xa;        public Class getColumnClass(int columnIndex) {&#xa;            return types [columnIndex];&#xa;        }&#xa;};&#xa;try{&#xa;    //tableModelSeragam = buildSeragamTableModel(profil);&#xa;    //tableModelIPP = inputTransactionIPP.buildIPPTableModel(profil, profil.currentLevel.tahun);&#xa;    tableModelIKS = buildIKSTableModel(profil, profil.currentLevel.tahun);&#xa;    tunggakanAllTahunTableModel = buildTunggakanAllTahunTableModel(profil);&#xa;    allTransactionTableModel = buildAllTransactionTableModel(new ArrayList&lt;Transaction&gt;());&#xa;    &#xa;}catch(SQLException ex){&#xa;    ex.printStackTrace();&#xa;}catch(KasirException ex){&#xa;    ex.printStackTrace();&#xa;}"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="DefaultComboBoxModel paymentMethodComboBoxModel = new DefaultComboBoxModel(TransactionDetail.PaymentMethod.values());&#xa;tableModelSeragam = new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;        {null, null, null, null},&#xa;        {null, null, null, null},&#xa;        {null, null, null, null},&#xa;        {null, null, null, null},&#xa;        {null, null, null, null}&#xa;    },&#xa;    new String [] {&#xa;        &quot;Seragam&quot;, &quot;Jumlah&quot;, &quot;Catatan&quot;, &quot;CheckBox&quot;&#xa;    }&#xa;);&#xa;&#xa;tableModelAlmamater = new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;        {null, null, null, null},&#xa;        {null, null, null, null},&#xa;        {null, null, null, null},&#xa;        {null, null, null, null},&#xa;        {null, null, null, null}&#xa;    },&#xa;    new String [] {&#xa;        &quot;Almamater&quot;, &quot;Jumlah&quot;, &quot;Catatan&quot;, &quot;CheckBox&quot;&#xa;    }&#xa;);&#xa;&#xa;tableModelBuku = new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;        {null, null, null, null},&#xa;        {null, null, null, null},&#xa;        {null, null, null, null},&#xa;        {null, null, null, null},&#xa;        {null, null, null, null}&#xa;    },&#xa;    new String [] {&#xa;        &quot;Buku&quot;, &quot;Jumlah&quot;, &quot;Catatan&quot;, &quot;CheckBox&quot;&#xa;    }&#xa;);&#xa;&#xa;tableModelIPP = new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;        {&quot;JULI&quot;, null},&#xa;        {&quot;AGUSTUS&quot;, null},&#xa;        {&quot;SEPTEMBER&quot;, null},&#xa;        {&quot;OKTOBER&quot;, null},&#xa;        {&quot;NOVEMBER&quot;, null},&#xa;        {&quot;DESEMBER&quot;, null},&#xa;        {&quot;JANUARI&quot;, null},&#xa;        {&quot;FEBRUARI&quot;, null},&#xa;        {&quot;MARET&quot;, null},&#xa;        {&quot;APRIL&quot;, null},&#xa;        {&quot;MEI&quot;, null},&#xa;        {&quot;JUNI&quot;, null}&#xa;        &#xa;    },&#xa;    new String [] {&#xa;        &quot;Bulan&quot;, &quot;Biaya IPP&quot;&#xa;    }&#xa;    ){&#xa;        Class[] types = new Class [] {&#xa;            java.lang.String.class, java.lang.Float.class&#xa;        };&#xa;&#xa;        boolean[] canEdit = new boolean [] {&#xa;            false, true&#xa;        };&#xa;        @Override&#xa;        public Class getColumnClass(int columnIndex) {&#xa;            return types [columnIndex];&#xa;        }&#xa;};&#xa;&#xa;tableModelCicilanHutang = new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;        {&quot;JULI&quot;, null},&#xa;        {&quot;AGUSTUS&quot;, null},&#xa;        {&quot;SEPTEMBER&quot;, null},&#xa;        {&quot;OKTOBER&quot;, null},&#xa;        {&quot;NOVEMBER&quot;, null},&#xa;        {&quot;DESEMBER&quot;, null},&#xa;        {&quot;JANUARI&quot;, null},&#xa;        {&quot;FEBRUARI&quot;, null},&#xa;        {&quot;MARET&quot;, null},&#xa;        {&quot;APRIL&quot;, null},&#xa;        {&quot;MEI&quot;, null},&#xa;        {&quot;JUNI&quot;, null}&#xa;        &#xa;    },&#xa;    new String [] {&#xa;        &quot;Bulan&quot;, &quot;Biaya Cicilan Hutang&quot;&#xa;    }&#xa;    ){&#xa;        Class[] types = new Class [] {&#xa;            java.lang.String.class, java.lang.Float.class&#xa;        };&#xa;&#xa;        boolean[] canEdit = new boolean [] {&#xa;            false, true&#xa;        };&#xa;        @Override&#xa;        public Class getColumnClass(int columnIndex) {&#xa;            return types [columnIndex];&#xa;        }&#xa;};&#xa;&#xa;tableModelIUS = new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;        {&quot;SEMESTER 1&quot;, null},&#xa;        {&quot;SEMESTER 2&quot;, null}&#xa;    },&#xa;    new String [] {&#xa;        &quot;Bulan&quot;, &quot;Biaya IUS&quot;&#xa;    }&#xa;    ){&#xa;        Class[] types = new Class [] {&#xa;            java.lang.String.class, java.lang.Float.class&#xa;        };&#xa;&#xa;        boolean[] canEdit = new boolean [] {&#xa;            false, true&#xa;        };&#xa;        @Override&#xa;        public Class getColumnClass(int columnIndex) {&#xa;            return types [columnIndex];&#xa;        }&#xa;};&#xa;&#xa;tableModelIKS = new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;        {&quot;Tahun Pertama&quot;, null},&#xa;        {&quot;Tahun Kedua&quot;, null},&#xa;        {&quot;Tahun Ketiga&quot;, null}&#xa;    },&#xa;    new String [] {&#xa;        &quot;Tahun&quot;, &quot;Biaya IKS&quot;&#xa;    }&#xa;    ){&#xa;        Class[] types = new Class [] {&#xa;            java.lang.String.class, java.lang.Float.class&#xa;        };&#xa;&#xa;        boolean[] canEdit = new boolean [] {&#xa;            false, true&#xa;        };&#xa;        @Override&#xa;        public Class getColumnClass(int columnIndex) {&#xa;            return types [columnIndex];&#xa;        }&#xa;};&#xa;&#xa;tunggakanAllTahunTableModel = new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;        {&quot;Tahun Pertama&quot;, null},&#xa;        {&quot;Tahun Kedua&quot;, null},&#xa;        {&quot;Tahun Ketiga&quot;, null}&#xa;    },&#xa;    new String [] {&#xa;        &quot;Tahun&quot;, &quot;Tunggakan&quot;&#xa;    }&#xa;    ){&#xa;        Class[] types = new Class [] {&#xa;            java.lang.String.class, java.lang.Float.class&#xa;        };&#xa;&#xa;        boolean[] canEdit = new boolean [] {&#xa;            false, true&#xa;        };&#xa;        @Override&#xa;        public Class getColumnClass(int columnIndex) {&#xa;            return types [columnIndex];&#xa;        }&#xa;};&#xa;try{&#xa;    //tableModelSeragam = buildSeragamTableModel(profil);&#xa;    //tableModelIPP = inputTransactionIPP.buildIPPTableModel(profil, profil.currentLevel.tahun);&#xa;    tableModelIKS = buildIKSTableModel(profil, profil.currentLevel.tahun);&#xa;    tunggakanAllTahunTableModel = buildTunggakanAllTahunTableModel(profil);&#xa;    allTransactionTableModel = buildAllTransactionTableModel(new ArrayList&lt;Transaction&gt;());&#xa;    &#xa;}catch(SQLException ex){&#xa;    ex.printStackTrace();&#xa;}catch(KasirException ex){&#xa;    ex.printStackTrace();&#xa;}"/>
         <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="InputTransactionFrame_jPanel1"/>
       </AuxValues>
 

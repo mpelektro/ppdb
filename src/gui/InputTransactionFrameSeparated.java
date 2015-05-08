@@ -387,6 +387,7 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
         tPVTs = paramPVTs;
         tTabungans = paramTabungans;
         tSumbangans= paramSumbangans;
+        tAlmamaters = paramAlmamaters;
         System.out.println("App Frame Pendaftara");
         initComponents();
     }
@@ -436,6 +437,10 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
         jTableDialogBuku = new javax.swing.JTable();
         jScrollPane1 = new javax.swing.JScrollPane();
         allTransactionTable = new javax.swing.JTable();
+        jPanelDialogAlmamater = new javax.swing.JPanel();
+        jLabel39 = new javax.swing.JLabel();
+        jScrollPane14 = new javax.swing.JScrollPane();
+        jTableDialogAlmamater = new javax.swing.JTable();
         jPanelDialogMain1 = new javax.swing.JPanel();
         jPanelDialogIPSP1 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
@@ -568,6 +573,19 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
             },
             new String [] {
                 "Seragam", "Jumlah", "Catatan", "CheckBox"
+            }
+        );
+
+        tableModelAlmamater = new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Almamater", "Jumlah", "Catatan", "CheckBox"
             }
         );
 
@@ -1020,6 +1038,34 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
         allTransactionTable.setModel(allTransactionTableModel);
         jScrollPane1.setViewportView(allTransactionTable);
 
+        jLabel39.setText(org.openide.util.NbBundle.getMessage(InputTransactionFrameSeparated.class, "InputTransactionFrameSeparated.jLabel39.text")); // NOI18N
+
+        jTableDialogAlmamater.setModel(tableModelAlmamater);
+        jTableDialogAlmamater.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jTableDialogAlmamaterPropertyChange(evt);
+            }
+        });
+        jScrollPane14.setViewportView(jTableDialogAlmamater);
+
+        javax.swing.GroupLayout jPanelDialogAlmamaterLayout = new javax.swing.GroupLayout(jPanelDialogAlmamater);
+        jPanelDialogAlmamater.setLayout(jPanelDialogAlmamaterLayout);
+        jPanelDialogAlmamaterLayout.setHorizontalGroup(
+            jPanelDialogAlmamaterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelDialogAlmamaterLayout.createSequentialGroup()
+                .addGroup(jPanelDialogAlmamaterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel39)
+                    .addComponent(jScrollPane14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanelDialogAlmamaterLayout.setVerticalGroup(
+            jPanelDialogAlmamaterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelDialogAlmamaterLayout.createSequentialGroup()
+                .addComponent(jLabel39)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane14, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
         javax.swing.GroupLayout jPanelDialogMainLayout = new javax.swing.GroupLayout(jPanelDialogMain);
         jPanelDialogMain.setLayout(jPanelDialogMainLayout);
         jPanelDialogMainLayout.setHorizontalGroup(
@@ -1042,6 +1088,11 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
                         .addComponent(jPanelDialogBuku, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 578, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanelDialogMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelDialogMainLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jPanelDialogAlmamater, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(1055, Short.MAX_VALUE)))
         );
         jPanelDialogMainLayout.setVerticalGroup(
             jPanelDialogMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1062,6 +1113,11 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
                     .addComponent(jButtonSave1)
                     .addComponent(jButtonDialogCancel))
                 .addContainerGap(188, Short.MAX_VALUE))
+            .addGroup(jPanelDialogMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDialogMainLayout.createSequentialGroup()
+                    .addContainerGap(439, Short.MAX_VALUE)
+                    .addComponent(jPanelDialogAlmamater, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(212, 212, 212)))
         );
 
         jPanelDialogMain1.setMinimumSize(new java.awt.Dimension(1024, 768));
@@ -2200,11 +2256,11 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
         jLabel37.setText(org.openide.util.NbBundle.getMessage(InputTransactionFrameSeparated.class, "InputTransactionFrameSeparated.jLabel37.text")); // NOI18N
 
         try{
-            tableModelSeragam = buildSeragamTableModel(profil);
+            tableModelAlmamater = buildAlmamaterTableModel(profil);
         }catch(Exception e){
             e.printStackTrace();
         }
-        jTableAlmamater.setModel(tableModelSeragam);
+        jTableAlmamater.setModel(tableModelAlmamater);
         jTableAlmamater.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 jTableAlmamaterPropertyChange(evt);
@@ -3467,6 +3523,10 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
         inputTransactionAlmamater.setVisible(true);
     }//GEN-LAST:event_jButtonAlmamaterActionPerformed
 
+    private void jTableDialogAlmamaterPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jTableDialogAlmamaterPropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTableDialogAlmamaterPropertyChange
+
     /**
      * @param args the command line arguments
      */
@@ -3593,6 +3653,7 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
+    private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -3626,6 +3687,7 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanelAlmamater;
     private javax.swing.JPanel jPanelCicilanHutang;
+    private javax.swing.JPanel jPanelDialogAlmamater;
     private javax.swing.JPanel jPanelDialogBuku;
     private javax.swing.JPanel jPanelDialogIPP1;
     private javax.swing.JPanel jPanelDialogIPSP;
@@ -3650,6 +3712,7 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane12;
     private javax.swing.JScrollPane jScrollPane13;
+    private javax.swing.JScrollPane jScrollPane14;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -3661,6 +3724,7 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
     private javax.swing.JTable jTableAlmamater;
     private javax.swing.JTable jTableBuku;
     private javax.swing.JTable jTableCicilanHutang;
+    private javax.swing.JTable jTableDialogAlmamater;
     private javax.swing.JTable jTableDialogBuku;
     private javax.swing.JTable jTableDialogSeragam;
     private javax.swing.JTable jTableDialogSeragam1;
@@ -4519,33 +4583,6 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
         }
     }
 
-    private void prepareObjects() throws SQLException, KasirException {
-        IPSP ipsp = Control.selectIuran(Iuran.Tipe.IPSP, IPSP.noIndukColName,false, profil.noInduk);
-        jTextFieldIPSPIuranAmount.setText(String.valueOf(ipsp.amount));
-        if(!jTextFieldIPSPAmount.getText().equals("")){
-            if(Float.valueOf(jTextFieldIPSPAmount.getText()) > 0F){
-                this.ipsp = ipsp;
-                
-                ipspTDetailUUID = UUID.randomUUID();
-                IPSPTransactionDetail ipspTransactionDetail = new IPSPTransactionDetail(ipspTDetailUUID,ipsp.id, this.clerk.id, 0L, profil.noInduk, profil.currentLevel.level1, Float.valueOf(jTextFieldIPSPAmount.getText()),
-                                                                        (TransactionDetail.PaymentMethod)jComboBoxIPSP.getSelectedItem(), new sak.Kalender(System.currentTimeMillis()), null, jTextFieldIPSPNote.getText(), false,false);
-                theCreatedDate = new sak.Kalender(System.currentTimeMillis());
-                tSumUUID = UUID.randomUUID();
-                TransactionSummary transactionSummary = new TransactionSummary(tSumUUID,profil.noInduk, this.clerk.id, theCreatedDate, theCreatedDate, Float.valueOf(jTextFieldIPSPAmount.getText()), "TSum Note");
-                this.iPSPTransactionDetail = ipspTransactionDetail;
-                this.transactionSummary = transactionSummary;
-            }
-        }
-        this.tableModelSeragam = buildSeragamTableModel(this.profil);
-        jTableSeragam.setModel(this.tableModelSeragam);
-        
-        this.tableModelBuku = buildBukuTableModel(this.profil);
-        jTableBuku.setModel(this.tableModelBuku);
-        
-        this.tableModelIPP = (DefaultTableModel) inputTransactionIPP.buildIPPTableModel(this.profil, this.tahunIPP.get(jComboBoxTahun.getSelectedIndex()));
-        jTableIPP.setModel(this.tableModelIPP);
-    }
-    
     private void prepareSubmitObjects() throws SQLException, KasirException {
         transactionList = new ArrayList<Transaction>();
         
@@ -4645,6 +4682,19 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
                 
                     totalAmount = totalAmount + seragamSToDB.get(i).amount;
                     transactionList.add(new Transaction(Iuran.Tipe.Seragam, seragamSToDB.get(i).amount, seragamSToDB.get(i).transactName));
+            }
+        }
+        
+//Almamater PART
+        if(almamaterSToDB != null){
+            this.tableModelAlmamater = inputTransactionAlmamater.buildAlmamaterSubmitTableModel(this.profil, almamaterSToDB);
+            jTableAlmamater = new JTable();
+            jTableAlmamater.setModel(this.tableModelAlmamater);
+            jTableDialogAlmamater.setModel(this.tableModelAlmamater);
+            for(int i = 0 ; i < almamaterSToDB.size(); i++){
+                
+                    totalAmount = totalAmount + almamaterSToDB.get(i).amount;
+                    transactionList.add(new Transaction(Iuran.Tipe.Almamater, almamaterSToDB.get(i).amount, almamaterSToDB.get(i).transactName));
             }
         }
         
@@ -4888,6 +4938,8 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
        }
    }
     
+    
+    
     private TableModel buildSeragamSubmitTableModel(Profil profil, List<Seragam> stdb) throws SQLException, KasirException{
        String columnNames[] = {"Transaksi Seragam", "Biaya", "Catatan", "Pembayaran"};
        
@@ -4911,6 +4963,107 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
             data[i][0]= seragamS.get(i).transactName;
             data[i][1]= seragamS.get(i).amount;
             data[i][2]= seragamS.get(i).note;
+            data[i][3] = 0f;
+       }
+       if(data.length > 0){
+       TableModel tm = new DefaultTableModel(data, columnNames){
+           @Override
+            public boolean isCellEditable(int row, int column) {
+                //all cells false for editable
+               if(jDialogTransactionSummary.isVisible()){
+                    return false;
+               }else{
+                    return true;
+               }
+            }
+            public Class getColumnClass(int c) {
+                return getValueAt(0, c).getClass();
+            }
+       };
+       
+       return tm;
+       }else{
+           TableModel tm = new DefaultTableModel(columnNames, 4);
+           return tm;
+       }
+   }
+    
+    private TableModel buildAlmamaterTableModel(Profil profil) throws SQLException, KasirException{
+       String columnNames[] = {"Transaksi Almamater", "Biaya", "Catatan", "Pembayaran"};
+       Set<Almamater> almamaterFilters = new HashSet<>();
+       almamaterFilters.add(new Almamater(profil.noInduk,null, null, 0F, null));
+       Map<Long, Almamater> searchResultMap = new HashMap<>();
+       searchResultMap = Control.exactFilterSelectIurans(Iuran.Tipe.Almamater, almamaterFilters);
+       
+       int j = 0;
+       almamaterS = new ArrayList<>();       
+       if(searchResultMap.size() > 0){
+        for(Map.Entry<Long, Almamater> entry: searchResultMap.entrySet()){
+            if(entry.getValue().transactDetailIDs.size() == 0){
+                almamaterS.add(entry.getValue());
+            }
+            j++;
+        }
+       }
+       Object[][] data = new Object[almamaterS.size()][5];
+       for(int i =0; i < almamaterS.size(); i++){
+            data[i][0]= almamaterS.get(i).transactName;
+            data[i][1]= almamaterS.get(i).amount;
+            data[i][2]= almamaterS.get(i).note;
+            data[i][3]= 0f;
+//            if(almamaterS.get(i).transactDetailIDs.size()>0){
+//                data[i][3] = new Boolean(true);
+//            }else{
+//                data[i][3] = new Boolean(false);
+//            }
+       }
+       calculateUnpaidAlmamater(profil);
+       if(data.length > 0){
+       TableModel tm = new DefaultTableModel(data, columnNames){
+           @Override
+            public boolean isCellEditable(int row, int column) {
+                //all cells false for editable
+               if(jDialogTransactionSummary.isVisible()){
+                    return false;
+               }else{
+                    return true;
+               }
+            }
+            public Class getColumnClass(int c) {
+                return getValueAt(0, c).getClass();
+            }
+       };
+       
+       return tm;
+       }else{
+           TableModel tm = new DefaultTableModel(columnNames, 4);
+           return tm;
+       }
+   }
+    
+    private TableModel buildAlmamaterSubmitTableModel(Profil profil, List<Almamater> stdb) throws SQLException, KasirException{
+       String columnNames[] = {"Transaksi Almamater", "Biaya", "Catatan", "Pembayaran"};
+       
+       Set<Almamater> almamaterFilters = new HashSet<>();
+       almamaterFilters.addAll(stdb);
+       Map<Long, Almamater> searchResultMap = new HashMap<>();
+       searchResultMap = Control.exactFilterSelectIurans(Iuran.Tipe.Almamater, almamaterFilters);
+       
+       int j = 0;
+       almamaterS = new ArrayList<>();       
+       if(searchResultMap.size() > 0){
+        for(Map.Entry<Long, Almamater> entry: searchResultMap.entrySet()){
+            if(entry.getValue().transactDetailIDs.size() == 0){
+                almamaterS.add(entry.getValue());
+            }
+            j++;
+        }
+       }
+       Object[][] data = new Object[almamaterS.size()][5];
+       for(int i =0; i < almamaterS.size(); i++){
+            data[i][0]= almamaterS.get(i).transactName;
+            data[i][1]= almamaterS.get(i).amount;
+            data[i][2]= almamaterS.get(i).note;
             data[i][3] = 0f;
        }
        if(data.length > 0){
@@ -6322,6 +6475,31 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
        return retVal;
     }
     
+    private float calculateUnpaidAlmamater(Profil profil) throws SQLException, KasirException {
+       float retVal = 0;
+//       Set<Seragam> seragamFilters = new HashSet<>();
+//       seragamFilters.add(new Seragam(profil.noInduk,null, null, 0F, null));
+//       Map<Long, Seragam> searchResultMap = new HashMap<>();
+//       
+//       searchResultMap = Control.exactFilterSelectIurans(Iuran.Tipe.Seragam, seragamFilters);
+//       seragamS = new ArrayList<>();       
+//       if(searchResultMap.size() > 0){
+//        for(Map.Entry<Long, Seragam> entry: searchResultMap.entrySet()){
+//            if(entry.getValue().transactDetailIDs.size()== 0){
+//                
+//                        seragamS.add(entry.getValue());
+//                    
+//                
+//            }
+//        }
+//       }
+//       for(int i =0; i < seragamS.size(); i++){
+//                retVal += seragamS.get(i).amount;
+//       }
+//       unpaidSeragam = retVal;
+       return retVal;
+    }
+    
     private float calculateUnpaidBuku(Profil profil) throws SQLException, KasirException {
        float retVal = 0;
        Set<Buku> bukuFilters = new HashSet<>();
@@ -6909,6 +7087,28 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
         } catch (KasirException ex) {
             Exceptions.printStackTrace(ex);
 //            jTotalTunggakanSeragam.setValue(0f);
+        }
+        
+        //Almamater
+        Float tunggakanAlmamater1 = 0f;
+       Set<Almamater> almamaterFilters = new HashSet<>();
+       almamaterFilters.add(new Almamater(profil.noInduk,null, null, 0F, null));
+       Map<Long, Almamater> srmAlmamater = new HashMap<>();
+        try {
+            srmAlmamater = Control.exactFilterSelectIurans(Iuran.Tipe.Almamater, almamaterFilters);
+            k = 0;
+            for(Map.Entry<Long, Almamater> entry: srmAlmamater.entrySet()){
+                if(entry.getValue().debt > 0)
+                    tunggakanAlmamater1 += entry.getValue().debt;
+                k++;
+            }
+//            jTotalTunggakanAlmamater.setValue(tunggakanAlmamater1);
+        } catch (SQLException ex) {
+            Exceptions.printStackTrace(ex);
+//            jTotalTunggakanAlmamater.setValue(0f);
+        } catch (KasirException ex) {
+            Exceptions.printStackTrace(ex);
+//            jTotalTunggakanAlmamater.setValue(0f);
         }
        
        
