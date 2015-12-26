@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PrintoutBuktiPembayaran" pageWidth="468" pageHeight="595" columnWidth="377" leftMargin="72" rightMargin="19" topMargin="20" bottomMargin="20" uuid="774f77e3-b2e7-4ced-9b65-8b6927fc08fc">
-	<property name="ireport.zoom" value="1.9487171000000019"/>
-	<property name="ireport.x" value="185"/>
-	<property name="ireport.y" value="524"/>
+	<property name="ireport.zoom" value="1.4641000000000013"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="428"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -25,7 +25,7 @@
 	</style>
 	<parameter name="Param_TransactionSummary_ID" class="java.lang.Integer"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["C:\\Users\\Daya Arka\\Documents\\NetBeansProjects\\Kasir7\\src\\printout\\"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["C:\\printout\\"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="Param_Profil_ID" class="java.lang.String">
 		<parameterDescription><![CDATA[Profil_ID from TranscationSummary]]></parameterDescription>
@@ -38,7 +38,7 @@
 	<parameter name="Param_Tunggakan_IPP_Each_Amount" class="java.lang.String"/>
 	<parameter name="Param_Tunggakan_Seragam" class="java.lang.String"/>
 	<parameter name="Param_Tunggakan_Seragam_Amount" class="java.lang.Float"/>
-        <parameter name="Param_Tunggakan_Almamater" class="java.lang.String"/>
+	<parameter name="Param_Tunggakan_Almamater" class="java.lang.String"/>
 	<parameter name="Param_Tunggakan_Almamater_Amount" class="java.lang.Float"/>
 	<parameter name="Param_Tunggakan_Buku" class="java.lang.String"/>
 	<parameter name="Param_Tunggakan_Buku_Amount" class="java.lang.Float"/>
@@ -115,8 +115,7 @@ WHERE
 			</textField>
 			<image>
 				<reportElement positionType="Float" x="0" y="0" width="73" height="70" uuid="c1881b03-7ecb-48fe-a326-012d1c5e8c14"/>
-				<imageExpression><![CDATA[//$P{SUBREPORT_DIR}+"SMA_Kosgoro_Logo.gif"
-"http://dayarka.com/kosgoro.gif"]]></imageExpression>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR}+"SMA_Kosgoro_Logo.gif"]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement x="73" y="28" width="304" height="14" uuid="501e5b25-b48b-4b27-b1c9-8a3258119b48"/>
@@ -271,7 +270,7 @@ WHERE
 		</band>
 	</columnHeader>
 	<detail>
-                <band height="12" splitType="Stretch">
+		<band height="12" splitType="Stretch">
 			<subreport>
 				<reportElement x="0" y="0" width="377" height="12" isRemoveLineWhenBlank="true" uuid="507355a8-4623-4519-ab5c-69d5c9ddcdb0"/>
 				<subreportParameter name="Param_PASB_TransactionSummary_ID">
@@ -365,6 +364,16 @@ WHERE
 		</band>
 		<band height="12" splitType="Prevent">
 			<subreport>
+				<reportElement x="0" y="0" width="377" height="12" isRemoveLineWhenBlank="true" uuid="d0e0de80-022e-4310-9f2e-9c32169481a1"/>
+				<subreportParameter name="Param_IUAP_TransactionSummary_ID">
+					<subreportParameterExpression><![CDATA[$P{Param_TransactionSummary_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "PrintoutBuktiPembayaran_IUAP.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="12" splitType="Prevent">
+			<subreport>
 				<reportElement x="0" y="0" width="377" height="12" isRemoveLineWhenBlank="true" uuid="1ed48b68-f02e-43bd-bd64-83a85d11342a"/>
 				<subreportParameter name="Param_IPSB_TransactionSummary_ID">
 					<subreportParameterExpression><![CDATA[$P{Param_TransactionSummary_ID}]]></subreportParameterExpression>
@@ -373,7 +382,7 @@ WHERE
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "PrintoutBuktiPembayaran_IPSB.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
-                <band height="12" splitType="Prevent">
+		<band height="12" splitType="Prevent">
 			<subreport>
 				<reportElement x="0" y="0" width="377" height="12" isRemoveLineWhenBlank="true" uuid="1ed48b68-f02e-43bd-bd64-83a85d11342a"/>
 				<subreportParameter name="Param_PVT_TransactionSummary_ID">
@@ -423,7 +432,7 @@ WHERE
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "PrintoutBuktiPembayaran_BUKU.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
-                <band height="12" splitType="Prevent">
+		<band height="12" splitType="Prevent">
 			<subreport>
 				<reportElement x="0" y="0" width="377" height="12" isRemoveLineWhenBlank="true" uuid="eb2b5a52-c43a-416f-90f8-5956c00520ae"/>
 				<subreportParameter name="Param_Attribute_TransactionSummary_ID">
@@ -433,7 +442,7 @@ WHERE
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "PrintoutBuktiPembayaran_Attribute.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
-                <band height="12" splitType="Prevent">
+		<band height="12" splitType="Prevent">
 			<subreport>
 				<reportElement x="0" y="0" width="377" height="12" isRemoveLineWhenBlank="true" uuid="80967a56-3bcf-4cd7-8e62-0855833fe96d"/>
 				<subreportParameter name="Param_Almamater_TransactionSummary_ID">
@@ -478,7 +487,7 @@ WHERE
 				<textElement>
 					<font size="8" isBold="true" isUnderline="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($P{Param_Tunggakan}.isEmpty())?"TIDAK ADA TUNGGAKAN":"INFORMASI TUNGGAKAN PESERTA DIDIK"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($P{Param_Tunggakan}.isEmpty())?"":"INFORMASI TUNGGAKAN PESERTA DIDIK"]]></textFieldExpression>
 			</textField>
 		</band>
 		<band height="14">

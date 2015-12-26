@@ -45,8 +45,10 @@ import sak.KasirException;
 public class AppFramePendaftaran extends javax.swing.JFrame {
     private Long tSumID;
     private ArrayList<IPP> paramIPPs;
+    private ArrayList<IUAP> paramIUAPs;
     private ArrayList<CicilanHutang> paramCicilanHutangs;
     private IPSP paramIPSP;
+    private PASB paramPASB;
     private ArrayList<IKS> paramIKSs;
     private ArrayList<Seragam> paramSeragams;
     private ArrayList<Almamater> paramAlmamaters;
@@ -660,7 +662,7 @@ public class AppFramePendaftaran extends javax.swing.JFrame {
         // TODO add your handling code here:
         //new InputTransactionFrameSeparated(this.clerk, this.profil).setVisible(true);
         //new InputTransactionFrameSeparated(this.clerk, this.profil, paramIPSP).setVisible(true);
-        new InputTransactionFrameSeparated(this, this.clerk, this.profil,paramIPPs, paramIPSP, paramSeragams, paramBukus, paramIKSs, paramILLs, paramIPSB, paramIUA, paramIUSs, paramOSISs, paramAttributes, paramPVTs, paramTabungans, paramSumbangans, paramCicilanHutangs, paramAlmamaters).setVisible(true);
+        new InputTransactionFrameSeparated(this, this.clerk, this.profil,paramIPPs, paramIPSP, paramSeragams, paramBukus, paramIKSs, paramILLs, paramIPSB, paramIUA, paramIUSs, paramOSISs, paramAttributes, paramPVTs, paramTabungans, paramSumbangans, paramCicilanHutangs, paramAlmamaters, paramIUAPs).setVisible(true);
     }//GEN-LAST:event_jButtonTransaksiActionPerformed
 
     private void jButtonSettingIuranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSettingIuranActionPerformed
@@ -776,7 +778,7 @@ public class AppFramePendaftaran extends javax.swing.JFrame {
             TransactionSummary tsum = Control.selectTSummary(tSumID);
             Profil tempProfil = Control.selectProfil(tsum.noInduk);
             TableModel tm = buildTunggakanProfilTableModel(tempProfil);
-            InputTransactionFrameSeparated itfs = new InputTransactionFrameSeparated(this, this.clerk, tempProfil,paramIPPs, paramIPSP, paramSeragams, paramBukus, paramIKSs, paramILLs, paramIPSB, paramIUA, paramIUSs, paramOSISs, paramAttributes, paramPVTs, paramTabungans, paramSumbangans, paramCicilanHutangs, paramAlmamaters);
+            InputTransactionFrameSeparated itfs = new InputTransactionFrameSeparated(this, this.clerk, tempProfil,paramIPPs, paramIPSP, paramSeragams, paramBukus, paramIKSs, paramILLs, paramIPSB, paramIUA, paramIUSs, paramOSISs, paramAttributes, paramPVTs, paramTabungans, paramSumbangans, paramCicilanHutangs, paramAlmamaters, paramIUAPs);
             try {
                 itfs.printBuktiPembayaran(tsum, tm, totalDebt);
             } catch (JRException ex) {
@@ -960,6 +962,48 @@ public class AppFramePendaftaran extends javax.swing.JFrame {
             j++;
         }
         paramIPPs = new ArrayList<>(tunggakanIPPs);
+       }
+       
+       //IUAP
+       
+       List<IUAP> tunggakanIUAPs = new ArrayList<IUAP>();
+       
+       Set<IUAP> iuapFilters = new HashSet<>();
+       iuapFilters.add(new IUAP(profil.noInduk, null, null));
+       Map<Long, IUAP> srmIUAP =new HashMap<>();
+       srmIUAP = Control.exactFilterSelectIurans(Iuran.Tipe.IUAP, iuapFilters);
+       j = 0;
+       targetIndex = 12;
+       if(srmIUAP.size() > 0){
+        for(Map.Entry<Long, IUAP> entry: srmIUAP.entrySet()){
+            Float temp = 0f;
+            if(targetYear == entry.getValue().chargedLevel.tahun){
+                for(int i = 0 ; i < 12 ; i++){
+                    if(i<targetMonth){
+                        temp += entry.getValue().entries.get(i).debt;
+                    }else{
+                        entry.getValue().entries.get(i).debt = 0;
+                        temp += entry.getValue().entries.get(i).debt;
+                    }
+                }
+                if(temp > 0){
+                    tunggakans.add(new Tunggakan("IUAP", temp, "IUAP ".concat(getTahunAjaran(entry.getValue().chargedLevel.tahun))));
+                    tunggakanIUAPs.add(entry.getValue());
+                }
+            }else{
+                for(int i = 0 ; i < 12 ; i++){
+                    temp += entry.getValue().entries.get(i).debt;
+                }
+                if(temp > 0){
+                    tunggakans.add(new Tunggakan("IUAP", temp, "IUAP ".concat(getTahunAjaran(entry.getValue().chargedLevel.tahun))));
+                    tunggakanIUAPs.add(entry.getValue());
+                }
+            }
+            
+            temp = 0f;
+            j++;
+        }
+        paramIUAPs = new ArrayList<>(tunggakanIUAPs);
        }
 
        //IPSP
@@ -1269,6 +1313,8 @@ public class AppFramePendaftaran extends javax.swing.JFrame {
         case "Sumbangan"    : retVal = "Sumbangan";
             break;
         case "Tabungan" :   retVal = "Tabungan";
+            break;
+        case "Almamater" :  retVal ="Jas dan Almamater";
             break;
         default : retVal = tipeIuran;
             break;

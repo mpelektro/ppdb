@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import kasir.Clerk;
 import pelajar.Level;
 import sak.KasirException;
 
@@ -30,6 +31,7 @@ public class GLTransRecordSet {
         
         MapAccountGL magl = null;
         for(MapAccountGL maglTmp : mapAccGLs){
+            System.out.println(maglTmp.iuranName);
             if(maglTmp.iuranName.equalsIgnoreCase(tipe.toString()) && maglTmp.level1 == lv1)
                 magl = maglTmp;
         }
@@ -47,7 +49,7 @@ public class GLTransRecordSet {
             }            
         }
         
-        kasBankRec = new GLTransRecord(type_no, tDetailSample.lastUpdateDate, kasBankGL, null, totalAmount);
+        kasBankRec = new GLTransRecord(type_no, tDetailSample.lastUpdateDate, kasBankGL, "Setoran "+tDetailSample.getTipeIuran().name()+" Kasir: "+Clerk.current.nama, totalAmount);
     }
     
     //ret null if tDetails is null / empty

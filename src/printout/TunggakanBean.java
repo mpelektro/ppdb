@@ -28,6 +28,8 @@ public class TunggakanBean implements Serializable{
     private Float tunggakanOSIS;
     private Float tunggakanPVT;
     private Float tunggakanCicilanHutang;
+    private Float tunggakanAlmamater;
+    private Float tunggakanIUAP;
     
     public TunggakanBean(){}
 
@@ -113,5 +115,21 @@ public class TunggakanBean implements Serializable{
     
     public void setTunggakanCicilanHutang(Float tunggakanCicilanHutang){
         this.tunggakanCicilanHutang = tunggakanCicilanHutang;
+    }
+    
+    public Float getTunggakanAlmamater(){
+        return tunggakanAlmamater;
+    }
+    
+    public void setTunggakanAlmamater(Float tunggakanAlmamater){
+        this.tunggakanAlmamater = tunggakanAlmamater;
+    }
+    
+    public Float getTunggakanIUAP(){
+        return tunggakanIUAP;
+    }
+    
+    public void setTunggakanIUAP(Float tunggakanIUAP){
+        this.tunggakanIUAP = tunggakanIUAP;
     }
 }

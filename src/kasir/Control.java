@@ -52,7 +52,9 @@ public class Control {
             if(clerk == null)
                 throw new KasirException(KasirException.Tipe.LOGIN_ERROR, new Pair<>(user,pass));
             else if(clerk.username.equalsIgnoreCase(user) && clerk.pass.equals(DigestUtils.sha1Hex(pass).substring(0,32))){
-                Clerk.current = new Clerk(null, null, null, "marbun", "marbun123456");
+                //Clerk.current = new Clerk(null, null, null, "marbun", "marbun123456");
+                Clerk.current = new Clerk(clerk.nip, clerk.nama, clerk.username, clerk.pass);
+                Clerk.current.id = clerk.id;
                 clerk.pass = pass;
                 return clerk;
             }else
@@ -477,7 +479,7 @@ public class Control {
     
     //===========================================transfer tDetails to gl_trans   
     public static class TDetailToGL_Trans{
-        static final String akunDBurl = "jdbc:mysql://ark3.dayarka.com/rusly_accountingdb", akundbUsername = "marbun", akundbPass = "marbun123456";
+        static final String akunDBurl = "jdbc:mysql://ark3.dayarka.com/rusly_accountingdb2015", akundbUsername = "marbun", akundbPass = "marbun123456";
         static Connection conn;
         static Statement stmt;
         
@@ -509,7 +511,17 @@ public class Control {
         }
         
         static ArrayList<GLTransRecordSet> buildGLTRS(TransactionDetail.Tipe tipe) throws SQLException, KasirException{
+            //Harus tambahin filter per kasir
+            
             ArrayList<TransactionDetail> tDetails = new ArrayList<>(selectTDetails(tipe, TransactionDetail.settledColName, false));
+            //filter untuk current clerk 
+            ArrayList<TransactionDetail> temp = new ArrayList<>();
+            for(int i = 0; i<tDetails.size(); i++){
+                if(tDetails.get(i).idClerk != Clerk.current.id){
+                    temp.add(tDetails.get(i));
+                }
+            }
+            tDetails.removeAll(temp);
             ArrayList<TransactionDetail> normalTDetails = new ArrayList<>(), piutangTDetails = new ArrayList<>();
             for(TransactionDetail tDetail : tDetails){
                 if(tDetail.piutang)
@@ -531,11 +543,11 @@ public class Control {
                 //}
                     
                     //for piutang
-                    gltrs = GLTransRecordSet.create(type_no, TransactionDetail.Tipe.PiutangTransaction, lv1, TransactionDetail.PaymentMethod.CASH, piutangTDetails, mapAccGLs);
-                    if(gltrs != null){
-                        gltrsS.add(gltrs);
-                        ++type_no;
-                    }
+//                    gltrs = GLTransRecordSet.create(type_no, TransactionDetail.Tipe.PiutangTransaction, lv1, TransactionDetail.PaymentMethod.CASH, piutangTDetails, mapAccGLs);
+//                    if(gltrs != null){
+//                        gltrsS.add(gltrs);
+//                        ++type_no;
+//                    }
             }
             
             Control.updateTDetails(tipe, tDetails);
@@ -550,7 +562,7 @@ public class Control {
         }
         
         static String genThePuckingSQL() throws KasirException{
-            String sql = "insert into 0_gl_trans (type_no, tran_date, account, memo_, amount) values ";
+            String sql = "insert into 0_gl_trans (type_no, tran_date, account, memo_, amount, opposite_party) values ";
             LinkedList<String> gltrsInsertClause = new LinkedList<>();
             
             for(ArrayList<GLTransRecordSet> gltrsS : GLTRSsAL){

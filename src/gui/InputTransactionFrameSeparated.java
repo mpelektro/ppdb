@@ -59,6 +59,7 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
     //Tunggakan Iuran-iuran
     
     private ArrayList<IPP> tIPPs;
+    private ArrayList<IUAP> tIUAPs;
     private ArrayList<CicilanHutang> tCicilanHutangs;
     private ArrayList<Seragam> tSeragams;
     private ArrayList<Almamater> tAlmamaters;
@@ -89,6 +90,19 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
     private List<Integer> tahunIPP;
     private String tunggakanIPPString = new String("");
     private String tunggakanIPPEachAmountString = new String("");
+    
+    //IUAP PART
+    private InputTransactionIUAP inputTransactionIUAP;
+    private TableModel tableModelIUAP;
+    public IUAP iuapFromDB;
+    public IUAP iuapCurrent;
+    public IUAP iuapStoreToDB;
+    private ArrayList<Float> iUAPAmounts;
+    private UUID iuapTDetailUUID;
+    private float unpaidIUAP = 0f;
+    private List<Integer> tahunIUAP;
+    private String tunggakanIUAPString = new String("");
+    private String tunggakanIUAPEachAmountString = new String("");
     
     //CicilanHutang PART
     private InputTransactionCicilanHutang inputTransactionCicilanHutang;
@@ -335,12 +349,13 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
         initComponents();
     }
     
-    public InputTransactionFrameSeparated(AppFrame af, Clerk cl, Profil profil, ArrayList<IPP> paramIPPs, IPSP paramIPSP, ArrayList<Seragam> paramSeragams, ArrayList<Buku> paramBukus, ArrayList<IKS> paramIKSs, ArrayList<ILL> paramILLs, IPSB paramIPSB, IUA paramIUA, ArrayList<IUS> paramIUSs, ArrayList<OSIS> paramOSISs, ArrayList<Attribute> paramAttributes, ArrayList<PVT> paramPVTs, ArrayList<Tabungan> paramTabungans, ArrayList<Sumbangan> paramSumbangans, PASB paramPASB, ArrayList<CicilanHutang> paramCicilanHutangs, ArrayList<Almamater> paramAlmamaters) {
+    public InputTransactionFrameSeparated(AppFrame af, Clerk cl, Profil profil, ArrayList<IPP> paramIPPs, IPSP paramIPSP, ArrayList<Seragam> paramSeragams, ArrayList<Buku> paramBukus, ArrayList<IKS> paramIKSs, ArrayList<ILL> paramILLs, IPSB paramIPSB, IUA paramIUA, ArrayList<IUS> paramIUSs, ArrayList<OSIS> paramOSISs, ArrayList<Attribute> paramAttributes, ArrayList<PVT> paramPVTs, ArrayList<Tabungan> paramTabungans, ArrayList<Sumbangan> paramSumbangans, PASB paramPASB, ArrayList<CicilanHutang> paramCicilanHutangs, ArrayList<Almamater> paramAlmamaters, ArrayList<IUAP> paramIUAPs) {
         this.appFrame = af;
         this.clerk = cl;
         Clerk.current.id = this.clerk.id;
         this.profil = profil;
         tIPPs = paramIPPs;
+        tIUAPs = paramIUAPs;
         tCicilanHutangs = paramCicilanHutangs;
         tIPSP = paramIPSP;
         tSeragams = paramSeragams;
@@ -357,22 +372,23 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
         tTabungans = paramTabungans;
         tSumbangans= paramSumbangans;
         tPASB = paramPASB;
-        if(DBSR.dbURL.equals("jdbc:mysql://ark3.dayarka.com/rusly_ppdbdb")){
-            System.out.println("PPDB");
-            
-        }else{
-            System.out.println("Kasir");
-        }
+//        if(DBSR.dbURL.equals("jdbc:mysql://ark3.dayarka.com/rusly_ppdbdb")){
+//            System.out.println("PPDB");
+//            
+//        }else{
+//            System.out.println("Kasir");
+//        }
         
         initComponents();
     }
     
-    public InputTransactionFrameSeparated(AppFramePendaftaran af, Clerk cl, Profil profil, ArrayList<IPP> paramIPPs, IPSP paramIPSP, ArrayList<Seragam> paramSeragams, ArrayList<Buku> paramBukus, ArrayList<IKS> paramIKSs, ArrayList<ILL> paramILLs, IPSB paramIPSB, IUA paramIUA, ArrayList<IUS> paramIUSs, ArrayList<OSIS> paramOSISs, ArrayList<Attribute> paramAttributes, ArrayList<PVT> paramPVTs, ArrayList<Tabungan> paramTabungans, ArrayList<Sumbangan> paramSumbangans, ArrayList<CicilanHutang> paramCicilanHutangs, ArrayList<Almamater> paramAlmamaters) {
+    public InputTransactionFrameSeparated(AppFramePendaftaran af, Clerk cl, Profil profil, ArrayList<IPP> paramIPPs, IPSP paramIPSP, ArrayList<Seragam> paramSeragams, ArrayList<Buku> paramBukus, ArrayList<IKS> paramIKSs, ArrayList<ILL> paramILLs, IPSB paramIPSB, IUA paramIUA, ArrayList<IUS> paramIUSs, ArrayList<OSIS> paramOSISs, ArrayList<Attribute> paramAttributes, ArrayList<PVT> paramPVTs, ArrayList<Tabungan> paramTabungans, ArrayList<Sumbangan> paramSumbangans, ArrayList<CicilanHutang> paramCicilanHutangs, ArrayList<Almamater> paramAlmamaters, ArrayList<IUAP> paramIUAPs) {
         this.appFramePendaftaran = af;
         this.clerk = cl;
         Clerk.current.id = this.clerk.id;
         this.profil = profil;
         tIPPs = paramIPPs;
+        tIUAPs = paramIUAPs;
         tCicilanHutangs = paramCicilanHutangs;
         tIPSP = paramIPSP;
         tSeragams = paramSeragams;
@@ -562,6 +578,18 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
         jLabel38 = new javax.swing.JLabel();
         jUnpaidAlmamater = new javax.swing.JTextField();
         jButtonBayarAlmamater = new javax.swing.JButton();
+        jFrameIUAP = new javax.swing.JFrame();
+        jPanelIUAP = new javax.swing.JPanel();
+        jLabel40 = new javax.swing.JLabel();
+        jLabelTahun4 = new javax.swing.JLabel();
+        jComboBoxTahunIUAP = new javax.swing.JComboBox();
+        jLabel41 = new javax.swing.JLabel();
+        jUnpaidIUAP = new javax.swing.JTextField();
+        jScrollPane15 = new javax.swing.JScrollPane();
+        jTableIUAP = new javax.swing.JTable();
+        jButtonBayarIUAP = new javax.swing.JButton();
+        jLabel42 = new javax.swing.JLabel();
+        jFormattedTextFieldIDDSaldo3 = new javax.swing.JFormattedTextField();
         DefaultComboBoxModel paymentMethodComboBoxModel = new DefaultComboBoxModel(TransactionDetail.PaymentMethod.values());
         tableModelSeragam = new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -620,6 +648,39 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
             },
             new String [] {
                 "Bulan", "Biaya IPP"
+            }
+        ){
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Float.class
+            };
+
+            boolean[] canEdit = new boolean [] {
+                false, true
+            };
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        };
+
+        tableModelIUAP = new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"JULI", null},
+                {"AGUSTUS", null},
+                {"SEPTEMBER", null},
+                {"OKTOBER", null},
+                {"NOVEMBER", null},
+                {"DESEMBER", null},
+                {"JANUARI", null},
+                {"FEBRUARI", null},
+                {"MARET", null},
+                {"APRIL", null},
+                {"MEI", null},
+                {"JUNI", null}
+
+            },
+            new String [] {
+                "Bulan", "Biaya IUAP"
             }
         ){
             Class[] types = new Class [] {
@@ -1457,6 +1518,7 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
 
         try{
             tahunComboBoxModel = buildIPPtahunComboBoxModel(profil);
+            System.out.println("lalala");
         }catch(SQLException ex){
             ex.printStackTrace();
         }catch(KasirException ex){
@@ -2327,6 +2389,129 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanelAlmamater, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(104, Short.MAX_VALUE))
+        );
+
+        jFrameIUAP.setMinimumSize(new java.awt.Dimension(680, 450));
+
+        jPanelIUAP.setMinimumSize(new java.awt.Dimension(570, 380));
+        jPanelIUAP.setPreferredSize(new java.awt.Dimension(680, 450));
+
+        jLabel40.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel40.setText(org.openide.util.NbBundle.getMessage(InputTransactionFrameSeparated.class, "InputTransactionFrameSeparated.jLabel40.text")); // NOI18N
+
+        jLabelTahun4.setText(org.openide.util.NbBundle.getMessage(InputTransactionFrameSeparated.class, "InputTransactionFrameSeparated.jLabelTahun4.text")); // NOI18N
+
+        try{
+            tahunComboBoxModel = buildIUAPtahunComboBoxModel(profil);
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }catch(KasirException ex){
+            ex.printStackTrace();
+        }
+        jComboBoxTahunIUAP.setModel(tahunComboBoxModel);
+        jComboBoxTahunIUAP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxTahunIUAPActionPerformed(evt);
+            }
+        });
+        jComboBoxTahunIUAP.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jComboBoxTahunIUAPPropertyChange(evt);
+            }
+        });
+
+        jLabel41.setText(org.openide.util.NbBundle.getMessage(InputTransactionFrameSeparated.class, "InputTransactionFrameSeparated.jLabel41.text")); // NOI18N
+
+        jUnpaidIUAP.setText(String.valueOf(unpaidIPP));
+        jUnpaidIUAP.setEnabled(false);
+
+        jTableIUAP.setModel(tableModelIUAP);
+        jTableIUAP.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        jTableIUAP.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTableIUAPFocusLost(evt);
+            }
+        });
+        jTableIUAP.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jTableIUAPPropertyChange(evt);
+            }
+        });
+        jScrollPane15.setViewportView(jTableIUAP);
+
+        jButtonBayarIUAP.setText(org.openide.util.NbBundle.getMessage(InputTransactionFrameSeparated.class, "InputTransactionFrameSeparated.jButtonBayarIUAP.text")); // NOI18N
+        jButtonBayarIUAP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBayarIUAPActionPerformed(evt);
+            }
+        });
+
+        jLabel42.setText(org.openide.util.NbBundle.getMessage(InputTransactionFrameSeparated.class, "InputTransactionFrameSeparated.jLabel42.text")); // NOI18N
+
+        jFormattedTextFieldIDDSaldo3.setText(org.openide.util.NbBundle.getMessage(InputTransactionFrameSeparated.class, "InputTransactionFrameSeparated.jFormattedTextFieldIDDSaldo3.text")); // NOI18N
+        jFormattedTextFieldIDDSaldo3.setEnabled(false);
+
+        javax.swing.GroupLayout jPanelIUAPLayout = new javax.swing.GroupLayout(jPanelIUAP);
+        jPanelIUAP.setLayout(jPanelIUAPLayout);
+        jPanelIUAPLayout.setHorizontalGroup(
+            jPanelIUAPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelIUAPLayout.createSequentialGroup()
+                .addGroup(jPanelIUAPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelIUAPLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane15))
+                    .addGroup(jPanelIUAPLayout.createSequentialGroup()
+                        .addGroup(jPanelIUAPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanelIUAPLayout.createSequentialGroup()
+                                .addGap(248, 248, 248)
+                                .addComponent(jButtonBayarIUAP))
+                            .addGroup(jPanelIUAPLayout.createSequentialGroup()
+                                .addComponent(jLabel40)
+                                .addGap(39, 39, 39)
+                                .addComponent(jLabelTahun4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jComboBoxTahunIUAP, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(82, 82, 82)
+                                .addGroup(jPanelIUAPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel41)
+                                    .addComponent(jLabel42))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanelIUAPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jUnpaidIUAP, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+                                    .addComponent(jFormattedTextFieldIDDSaldo3))))
+                        .addGap(0, 117, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanelIUAPLayout.setVerticalGroup(
+            jPanelIUAPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelIUAPLayout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addGroup(jPanelIUAPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxTahunIUAP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelTahun4)
+                    .addComponent(jLabel40)
+                    .addComponent(jLabel41)
+                    .addComponent(jUnpaidIUAP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelIUAPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel42)
+                    .addComponent(jFormattedTextFieldIDDSaldo3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(19, 19, 19)
+                .addComponent(jScrollPane15, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonBayarIUAP)
+                .addContainerGap(100, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jFrameIUAPLayout = new javax.swing.GroupLayout(jFrameIUAP.getContentPane());
+        jFrameIUAP.getContentPane().setLayout(jFrameIUAPLayout);
+        jFrameIUAPLayout.setHorizontalGroup(
+            jFrameIUAPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanelIUAP, javax.swing.GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE)
+        );
+        jFrameIUAPLayout.setVerticalGroup(
+            jFrameIUAPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanelIUAP, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -3267,9 +3452,10 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
         if(this.profil.currentLevel.level1.toString().equals("SMP")){
             inputTransactionIUA = new InputTransactionIUA(this.profil, this);
             inputTransactionIUA.setVisible(true);
-        }else if(this.profil.currentLevel.level1.equals("SMA")){
-            
-        }else if(this.profil.currentLevel.level1.equals("SMK")){
+        }else if(this.profil.currentLevel.level1.toString().equals("SMA")){
+            inputTransactionIUAP = new InputTransactionIUAP(profil, this);
+            inputTransactionIUAP.setVisible(true);
+        }else if(this.profil.currentLevel.level1.toString().equals("SMK")){
             inputTransactionIUA = new InputTransactionIUA(this.profil, this);
             inputTransactionIUA.setVisible(true);
         }
@@ -3527,6 +3713,26 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTableDialogAlmamaterPropertyChange
 
+    private void jComboBoxTahunIUAPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTahunIUAPActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxTahunIUAPActionPerformed
+
+    private void jComboBoxTahunIUAPPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jComboBoxTahunIUAPPropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxTahunIUAPPropertyChange
+
+    private void jTableIUAPFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTableIUAPFocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTableIUAPFocusLost
+
+    private void jTableIUAPPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jTableIUAPPropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTableIUAPPropertyChange
+
+    private void jButtonBayarIUAPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBayarIUAPActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonBayarIUAPActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -3577,6 +3783,7 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
     private javax.swing.JButton jButtonBayarCicilanHutang;
     private javax.swing.JButton jButtonBayarIKS;
     private javax.swing.JButton jButtonBayarIPP;
+    private javax.swing.JButton jButtonBayarIUAP;
     private javax.swing.JButton jButtonBayarSeragam;
     private javax.swing.JButton jButtonBuku;
     private javax.swing.JButton jButtonCicilanHutang;
@@ -3609,10 +3816,12 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
     private javax.swing.JComboBox jComboBoxTahun1;
     private javax.swing.JComboBox jComboBoxTahun2;
     private javax.swing.JComboBox jComboBoxTahun3;
+    private javax.swing.JComboBox jComboBoxTahunIUAP;
     public javax.swing.JDialog jDialogTransactionSummary;
     private javax.swing.JFormattedTextField jFormattedTextFieldIDDSaldo;
     private javax.swing.JFormattedTextField jFormattedTextFieldIDDSaldo1;
     private javax.swing.JFormattedTextField jFormattedTextFieldIDDSaldo2;
+    private javax.swing.JFormattedTextField jFormattedTextFieldIDDSaldo3;
     private javax.swing.JFrame jFrameAlmamater;
     private javax.swing.JFrame jFrameBuku;
     private javax.swing.JFrame jFrameCicilanHutang;
@@ -3620,6 +3829,7 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
     private javax.swing.JFrame jFrameIKS;
     private javax.swing.JFrame jFrameIPP;
     private javax.swing.JFrame jFrameIPSP;
+    private javax.swing.JFrame jFrameIUAP;
     private javax.swing.JFrame jFrameSeragam;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -3655,6 +3865,9 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel41;
+    private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -3680,6 +3893,7 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelTahun1;
     private javax.swing.JLabel jLabelTahun2;
     private javax.swing.JLabel jLabelTahun3;
+    private javax.swing.JLabel jLabelTahun4;
     private javax.swing.JLabel jLableProfilTitle;
     private javax.swing.JLabel jLableProfilTitle1;
     private javax.swing.JLabel jLableProfilTitle2;
@@ -3702,6 +3916,7 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelIKS;
     private javax.swing.JPanel jPanelIPP;
     private javax.swing.JPanel jPanelIPSP;
+    private javax.swing.JPanel jPanelIUAP;
     private javax.swing.JPanel jPanelMain;
     private javax.swing.JPanel jPanelProfil;
     private javax.swing.JPanel jPanelSeragam;
@@ -3713,6 +3928,7 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane12;
     private javax.swing.JScrollPane jScrollPane13;
     private javax.swing.JScrollPane jScrollPane14;
+    private javax.swing.JScrollPane jScrollPane15;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -3731,6 +3947,7 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
     private javax.swing.JTable jTableIKS;
     private javax.swing.JTable jTableIPP;
     private javax.swing.JTable jTableIPP2;
+    private javax.swing.JTable jTableIUAP;
     private javax.swing.JTable jTableSeragam;
     private javax.swing.JTable jTableTunggakanAll;
     private javax.swing.JTextArea jTextAreaIDDNote;
@@ -3780,6 +3997,7 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
     private javax.swing.JTextField jUnpaidCicilanHutang;
     private javax.swing.JTextField jUnpaidIKS;
     private javax.swing.JTextField jUnpaidIPP;
+    private javax.swing.JTextField jUnpaidIUAP;
     private javax.swing.JTextField jUnpaidSeragam;
     // End of variables declaration//GEN-END:variables
     
@@ -4204,6 +4422,84 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
 
         }
         
+        //PART IUAP
+        if(jTextFieldIUAAmountSimple.getValue() != null){
+            for(int i = 0 ; i < 12 ; i++){
+                iuapTDetailUUID = UUID.randomUUID();
+                if(iuapStoreToDB.entries.get(i)!=null){
+                    if(!inputTransactionIUAP.isIUAPEnough(iuapFromDB.entries.get(i).transactDetailIDs, iuapFromDB.entries.get(i).amount)){
+                    ArrayList<IUAPTransactionDetail> iuapTransactionDetails = new ArrayList();
+                    if(inputTransactionIUAP.iUAPAmounts.get(i) > 0f){
+                        IUAPTransactionDetail iuapTransactionDetail = new IUAPTransactionDetail(iuapTDetailUUID, 
+                                                                                            iuapFromDB.id, 
+                                                                                            clerk.id, 
+                                                                                            transactionSummary.id, profil.noInduk, profil.currentLevel.level1, (inputTransactionIUAP.iUAPAmounts.get(i)), TransactionDetail.PaymentMethod.CASH,
+                                                                                            jTableIUAP.getValueAt(i,0).toString().concat(" Tahun ajaran ").concat(jComboBoxTahun.getSelectedItem().toString()),false);
+
+                        iuapTransactionDetails.add(iuapTransactionDetail);
+                    }
+                    if(iDDAmounts.get(i) > 0f){
+                        IUAPTransactionDetail iuapTransactionDetail = new IUAPTransactionDetail(iuapTDetailUUID, 
+                                                                                            iuapFromDB.id, 
+                                                                                            clerk.id, 
+                                                                                            transactionSummary.id, profil.noInduk, profil.currentLevel.level1, iDDAmounts.get(i), TransactionDetail.PaymentMethod.IDD,
+                                                                                            jTableIUAP.getValueAt(i,0).toString().concat(" Tahun ajaran ").concat(jComboBoxTahun.getSelectedItem().toString()),false);
+                        iuapTransactionDetails.add(iuapTransactionDetail);
+                        // transactOUT IDD , kurangin IDD amount sama insert TDetail IDD
+
+                        IDD.transactOut(profil, transactionSummary.id, iDDAmounts.get(i));
+                    }
+                    if(beasiswaAmounts.get(i) > 0f){
+                        if(Beasiswa.transactOut(profil, transactionSummary.id, beasiswaAmounts.get(i))){
+                        IUAPTransactionDetail iuapTransactionDetail = new IUAPTransactionDetail(iuapTDetailUUID, 
+                                                                                            iuapFromDB.id, 
+                                                                                            clerk.id, 
+                                                                                            transactionSummary.id, profil.noInduk, profil.currentLevel.level1, beasiswaAmounts.get(i), TransactionDetail.PaymentMethod.BEASISWA,
+                                                                                            jTableIUAP.getValueAt(i,0).toString().concat(" Tahun ajaran ").concat(jComboBoxTahun.getSelectedItem().toString()),false);
+                        iuapTransactionDetails.add(iuapTransactionDetail);
+                        }
+                    }
+                    if(beasiswaCostAmounts.get(i) > 0f){
+                        IUAPTransactionDetail iuapTransactionDetail = new IUAPTransactionDetail(iuapTDetailUUID, 
+                                                                                            iuapFromDB.id, 
+                                                                                            clerk.id, 
+                                                                                            transactionSummary.id, profil.noInduk, profil.currentLevel.level1, beasiswaCostAmounts.get(i), TransactionDetail.PaymentMethod.BEASISWA_COST,
+                                                                                            jTableIUAP.getValueAt(i,0).toString().concat(" Tahun ajaran ").concat(jComboBoxTahun.getSelectedItem().toString()),false);
+                        iuapTransactionDetails.add(iuapTransactionDetail);
+                        BeasiswaCost.transactOut(profil, transactionSummary.id, beasiswaCostAmounts.get(i));
+                    }
+                    Control.insertTDetails(TransactionDetail.Tipe.IUAPTransaction, iuapTransactionDetails);
+                    iuapTransactionDetails.clear();
+                    iuapTransactionDetails = new ArrayList(Control.selectTDetails(TransactionDetail.Tipe.IUAPTransaction, TransactionDetail.uuidColName, false, iuapTDetailUUID.toString()));
+                    for(int j = 0 ; j < iuapTransactionDetails.size(); j++){
+                        iuapFromDB.entries.get(i).transactDetailIDs.add(iuapTransactionDetails.get(j).id);
+                        iuapFromDB.entries.get(i).debt -= iuapTransactionDetails.get(j).amount;
+                    }
+    //                Control.insertTDetail(TransactionDetail.Tipe.IUAPTransaction, iuapTransactionDetail);
+    //                iuapTransactionDetail = Control.selectTDetail(TransactionDetail.Tipe.IUAPTransaction, TransactionDetail.uuidColName, false, iuapTDetailUUID.toString());
+    //                iuapStoreToDB.entries.get(i).transactDetailIDs.add(iuapTransactionDetail.id);
+
+                    }
+                }
+            }
+            iuapStoreToDB.id = iuapFromDB.id;
+            iuapStoreToDB.noInduk = iuapFromDB.noInduk;
+            iuapStoreToDB.chargedLevel = iuapFromDB.chargedLevel;
+
+            for(int i = 0 ; i < iuapStoreToDB.entries.size(); i++){
+                if(iuapStoreToDB.entries.get(i) != null){
+                    iuapStoreToDB.entries.get(i).amount = iuapFromDB.entries.get(i).amount;
+                    iuapStoreToDB.entries.get(i).debt = iuapFromDB.entries.get(i).debt;
+                    iuapStoreToDB.entries.get(i).transactDetailIDs = iuapFromDB.entries.get(i).transactDetailIDs;
+
+                }
+            }
+            Control.updateIuran(Iuran.Tipe.IUAP, iuapStoreToDB);
+            this.transactionSummary.totalAmount = totalAmount;
+            Control.updateTSummary(transactionSummary);
+
+        }
+        
         //PART CicilanHutang
         if(jTextFieldCicilanHutangAmountSimple.getValue() != null){
             for(int i = 0 ; i < 12 ; i++){
@@ -4622,7 +4918,7 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
             }
         }
         
-        //PASB Part
+        //PASB Part (automatic PASB)
         if(DBSR.dbURL.equals("jdbc:mysql://ark3.dayarka.com/rusly_ppdbdb")){
             PASB pasb = Control.selectIuran(Iuran.Tipe.PASB, PASB.noIndukColName,false, profil.noInduk);
             this.pasb = pasb;
@@ -4657,19 +4953,21 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
         }
         
         //IUA Part
-        if(!jTextFieldIUAAmountSimple.getText().equals("")){
-            if((Long)(jTextFieldIUAAmountSimple.getValue()) > 0F){
-                IUA iua = Control.selectIuran(Iuran.Tipe.IUA, IUA.noIndukColName,false, profil.noInduk);
-                this.iua = iua;
-                iuaTDetailUUID = UUID.randomUUID();
-                IUATransactionDetail iuaTransactionDetail = new IUATransactionDetail(iuaTDetailUUID,iua.id, this.clerk.id, 0L, profil.noInduk, profil.currentLevel.level1, Float.valueOf(inputTransactionIUA.jTextFieldIUAAmount.getText()),
-                                                                        (TransactionDetail.PaymentMethod.CASH), new sak.Kalender(System.currentTimeMillis()), null, inputTransactionIUA.jTextFieldIUANote.getText(), false,false);
-                theCreatedDate = new sak.Kalender(System.currentTimeMillis());
-                this.iUATransactionDetail = iuaTransactionDetail;
-                //jTextFieldIUAAmount1.setText(jTextFieldIUAAmountSimple.getText());
-                //jTextFieldIUANote1.setText(inputTransactionIUA.jTextFieldIUANote.getText());
-                totalAmount = totalAmount + (((Long)jTextFieldIUAAmountSimple.getValue()).floatValue());
-                transactionList.add(new Transaction(Iuran.Tipe.IUA, iuaTransactionDetail.amount, iuaTransactionDetail.note));
+        if(this.profil.currentLevel.level1.toString().equals("SMP") || this.profil.currentLevel.level1.toString().equals("SMK")){
+            if(!jTextFieldIUAAmountSimple.getText().equals("")){
+                if((Long)(jTextFieldIUAAmountSimple.getValue()) > 0F){
+                    IUA iua = Control.selectIuran(Iuran.Tipe.IUA, IUA.noIndukColName,false, profil.noInduk);
+                    this.iua = iua;
+                    iuaTDetailUUID = UUID.randomUUID();
+                    IUATransactionDetail iuaTransactionDetail = new IUATransactionDetail(iuaTDetailUUID,iua.id, this.clerk.id, 0L, profil.noInduk, profil.currentLevel.level1, Float.valueOf(inputTransactionIUA.jTextFieldIUAAmount.getText()),
+                                                                            (TransactionDetail.PaymentMethod.CASH), new sak.Kalender(System.currentTimeMillis()), null, inputTransactionIUA.jTextFieldIUANote.getText(), false,false);
+                    theCreatedDate = new sak.Kalender(System.currentTimeMillis());
+                    this.iUATransactionDetail = iuaTransactionDetail;
+                    //jTextFieldIUAAmount1.setText(jTextFieldIUAAmountSimple.getText());
+                    //jTextFieldIUANote1.setText(inputTransactionIUA.jTextFieldIUANote.getText());
+                    totalAmount = totalAmount + (((Long)jTextFieldIUAAmountSimple.getValue()).floatValue());
+                    transactionList.add(new Transaction(Iuran.Tipe.IUA, iuaTransactionDetail.amount, iuaTransactionDetail.note));
+                }
             }
         }
 //Seragam PART
@@ -4782,6 +5080,27 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
             
         }
         
+        //IUAP PART
+        if(this.profil.currentLevel.level1.toString().equals("SMA")){
+            if(jTextFieldIUAAmountSimple.getValue() != null){
+                this.tableModelIUAP = inputTransactionIUAP.buildIUAPSubmitTableModel(this.profil, this.tahunIUAP.get(jComboBoxTahunIUAP.getSelectedIndex()));
+                jTableIUAP.setModel(this.tableModelIUAP);
+    //            jTableIUAP1.setModel(this.tableModelIUAP);
+
+
+                for(int i = 0 ; i<12; i++){
+                    if(iuapStoreToDB.entries.get(i) != null){
+                        //totalAmount = totalAmount + (iuapFromDB.entries.get(i).amount - iDDAmounts.get(i));
+                        totalAmount += iDDAmounts.get(i)+inputTransactionIUAP.iUAPAmounts.get(i)+inputTransactionIUAP.beasiswaAmounts.get(i)+inputTransactionIUAP.beasiswaCostAmounts.get(i);
+                        beasiswaRequest +=inputTransactionIUAP.beasiswaAmounts.get(i);
+                        beasiswaCostRequest += inputTransactionIUAP.beasiswaCostAmounts.get(i);
+                        iddRequest += iDDAmounts.get(i);
+                        if(iuapStoreToDB.entries.get(i).amount != 0.0f)
+                        transactionList.add(new Transaction(Iuran.Tipe.IUAP, iuapStoreToDB.entries.get(i).amount, "IUAP Bulan ".concat(getMonthName(i+1))));
+                    }
+                }
+            }
+        }        
         //CicilanHutang PART
         if(jTextFieldCicilanHutangAmountSimple.getValue() != null){
             this.tableModelCicilanHutang = inputTransactionCicilanHutang.buildCicilanHutangSubmitTableModel(this.profil, this.tahunCicilanHutang.get(jComboBoxTahun.getSelectedIndex()));
@@ -5223,6 +5542,35 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
        return tahunComboBoxModel;
     }
     
+    private ComboBoxModel buildIUAPtahunComboBoxModel(Profil profil) throws SQLException, KasirException {
+       Set<IUAP> iuapFilters = new HashSet<>();
+       ArrayList<Entry> entries = new ArrayList();
+       iuapFilters.add(new IUAP(profil.noInduk, null, entries));
+       Map<Long, IUAP> searchResultMap = Control.exactFilterSelectIurans(Iuran.Tipe.IUAP, iuapFilters);
+       this.tahunIUAP = new ArrayList<>();
+       List<String> tahunAjaran = new ArrayList<>();
+       Object[][] data = new Object[searchResultMap.size()][12];
+       int i = 0;
+       if(searchResultMap.size() > 0){
+        for(Map.Entry<Long, IUAP> entry: searchResultMap.entrySet()){
+            data[i][0]= entry.getValue().entries.get(i);
+            data[i][1]= entry.getValue().entries.get(i).amount;
+            
+            this.tahunIUAP.add(entry.getValue().chargedLevel.tahun);
+            tahunAjaran.add(String.valueOf(entry.getValue().chargedLevel.tahun).concat(" - ").concat(String.valueOf(entry.getValue().chargedLevel.tahun+1)));
+            i++;
+        }
+       }
+       calculateUnpaidIUAP(profil, tahunIUAP);
+       //== bikin tunggakan beans ===
+       
+       
+       //== end bikin tunggakan beans ===
+       
+       tahunComboBoxModel = new DefaultComboBoxModel(tahunAjaran.toArray());
+       return tahunComboBoxModel;
+    }
+    
     private ComboBoxModel buildCicilanHutangtahunComboBoxModel(Profil profil) throws SQLException, KasirException {
        Set<CicilanHutang> cicilanHutangFilters = new HashSet<>();
        ArrayList<Entry> entries = new ArrayList();
@@ -5475,7 +5823,8 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
        temp = 0f;
        for(int j = 0 ; j < tahunAjaranInt.size(); j++){
            if(tIPPs.isEmpty()){
-               data[0][j+1] = 0;
+               tungs.setValue(0f);
+               data[0][j+1] = tungs.getText();
            }
            for(int k = 0 ; k < tIPPs.size(); k++){
                if(tIPPs.get(k).chargedLevel.tahun == tahunAjaranInt.get(j)){
@@ -5631,14 +5980,51 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
        
        
        //IUA
-       if(tIUA != null){
-        tungs.setValue(tIUA.debt);
-        tunggakanPerYear[0] += tIUA.debt;
-       }else{
-           tungs.setValue(0f);
+       if(this.profil.currentLevel.level1.equals("SMP") || this.profil.currentLevel.level1.equals("SMK")){
+        if(tIUA != null){
+         tungs.setValue(tIUA.debt);
+         tunggakanPerYear[0] += tIUA.debt;
+        }else{
+            tungs.setValue(0f);
+        }
+        data[8][0] = tungs.getText();
+        data[8][1] = tungs.getText();
+       }else if(tIUAPs !=null){
+       //IUAP
+        temp = 0f;
+        for(int j = 0 ; j < tahunAjaranInt.size(); j++){
+            if(tIUAPs.isEmpty()){
+                tungs.setValue(temp);
+                data[8][j+1] = tungs.getText();
+            }
+            for(int k = 0 ; k < tIUAPs.size(); k++){
+                if(tIUAPs.get(k).chargedLevel.tahun == tahunAjaranInt.get(j)){
+                    for(Entry e : tIUAPs.get(k).entries){
+                        temp += e.debt;
+                    }
+                    tungs.setValue(temp);
+                    data[8][j+1] = tungs.getText();
+                    tunggakanPerYear[j] += temp;
+                }
+                temp = 0f;
+            }
+            if(data[8][j+1] == null){
+                tungs.setValue(0f);
+                data[8][j+1] = tungs.getText();
+            }
+        }
+        if(tIUAPs !=null){
+         for(int j = 0 ; j< tIUAPs.size(); j++){
+             for(Entry e : tIUAPs.get(j).entries){
+                     temp += e.debt;
+             }
+         }
+        }
+        tungs.setValue(temp);
+        data[8][0]=tungs.getText();
+        temp =0f;
        }
-       data[8][0] = tungs.getText();
-       data[8][1] = tungs.getText();
+       
        
        //IUS
        if(tIUSs != null){
@@ -5921,6 +6307,47 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
             }
         }
        unpaidIPP = retVal;
+       return retVal;
+    }
+    
+    private float calculateUnpaidIUAP(Profil profil, List<Integer> tahuns) throws SQLException, KasirException {
+       Set<IUAP> iuapFilters = new HashSet<>();
+       float retVal = 0;
+       ArrayList<Entry> entries = new ArrayList<>();
+       iuapFilters.clear();
+       int targetMonth = Calendar.getInstance().get(Calendar.MONTH);
+       int targetYear = Calendar.getInstance().get(Calendar.YEAR);
+       if(targetMonth>5){//JULY - DECEMBER
+           targetMonth = targetMonth - 5;
+       }else{//JANUARY - JUNE
+           targetMonth = targetMonth + 7;
+           targetYear = targetYear - 1;
+       }
+       System.out.println("Month INT: "+Calendar.getInstance().get(Calendar.MONTH));
+       for(int i = 0; i< tahuns.size(); i++){
+           iuapFilters.add(new IUAP(profil.noInduk, new Level(null,null,null,tahuns.get(i)), entries));
+           
+        }
+       Map<Long, IUAP> searchResultMap = Control.exactFilterSelectIurans(Iuran.Tipe.IUAP, iuapFilters);
+        if(searchResultMap.size() > 0){
+            for(Map.Entry<Long, IUAP> entry: searchResultMap.entrySet()){
+                for(int j =0 ; j< entry.getValue().entries.size(); j++){
+                    if((entry.getValue().entries.get(j).transactDetailIDs.isEmpty()) 
+                            && ((entry.getValue().chargedLevel.tahun < targetYear)? true:(entry.getValue().entries.get(j).period <= targetMonth))){
+                        retVal += entry.getValue().entries.get(j).amount;
+                    }else if(entry.getValue().entries.get(j).transactDetailIDs.size() > 0){
+                        Float temp = 0f;
+                        for(Long l : entry.getValue().entries.get(j).transactDetailIDs){
+                            temp += Control.selectTDetail(TransactionDetail.Tipe.IUAPTransaction, l).amount;
+                        }
+                        if(temp < entry.getValue().entries.get(j).amount){
+                            retVal += temp;
+                        } 
+                    }
+                }
+            }
+        }
+       unpaidIUAP = retVal;
        return retVal;
     }
     
@@ -6891,6 +7318,13 @@ public class InputTransactionFrameSeparated extends javax.swing.JFrame {
         }
         String tunggakanTotalAmount = NumberFormat.getInstance().format(totalDebt);
         tunggakanTotalAmount = "Rp ".concat(tunggakanTotalAmount);
+        
+        //TEMPORARY SET NULL PARAM_TUNGGAKAN A.K.A. tunggakanDoang tunggakanDoangAmount tunggakanTotalAmount
+        tunggakanDoang = "";
+        tunggakanDoangAmount ="";
+        tunggakanTotalAmount = "";
+        
+        
         jasperParameter.put("Param_Tunggakan", tunggakanDoang);
         jasperParameter.put("Param_Tunggakan_Amount", tunggakanDoangAmount); 
         jasperParameter.put("Param_Tunggakan_Total_Amount", tunggakanTotalAmount);

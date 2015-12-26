@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import sak.Kalender;
 import sak.KasirException;
-
+import kasir.Clerk;
 /**
  *
  * @author kedra
@@ -28,7 +28,7 @@ public class GLTransRecord {
         this.amount = amount;
     }
     public GLTransRecord(long typeNo, String account, TransactionDetail tDetail){
-        this(typeNo, tDetail.lastUpdateDate, account, tDetail.note, tDetail.amount * -1);
+        this(typeNo, tDetail.lastUpdateDate, account, tDetail.getTipeIuran().toString().concat(" "+tDetail.note+" ").concat(tDetail.noIndukProfil), tDetail.amount * -1);
     }
     
     public boolean isInsertDBValid(){
@@ -44,7 +44,7 @@ public class GLTransRecord {
                 insertClause += ", '" + memo_ + "'";
             else
                 insertClause += ", ''";
-            insertClause += ", " + amount + ")";
+            insertClause += ", " + amount + ",'"+Clerk.current.nama+" (Kasir)')";
             return insertClause;
         }else
             throw new KasirException(KasirException.Tipe.DB_INVALID, this);

@@ -7,6 +7,7 @@ package gui;
 import iuran.*;
 import java.sql.SQLException;
 import java.util.*;
+import javax.swing.JFormattedTextField;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -71,9 +72,18 @@ public class InputEditTransactionSummaryFrame extends javax.swing.JFrame {
         }
 
         allTransactionTable.setModel(allTransactionTableModel);
+        allTransactionTable.removeColumn(allTransactionTable.getColumnModel().getColumn(3));
+        allTransactionTable.setColumnSelectionAllowed(false);
+        allTransactionTable.setRowSelectionAllowed(false);
+        allTransactionTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         allTransactionTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 allTransactionTableMouseReleased(evt);
+            }
+        });
+        allTransactionTable.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                allTransactionTablePropertyChange(evt);
             }
         });
         jScrollPane1.setViewportView(allTransactionTable);
@@ -134,8 +144,15 @@ public class InputEditTransactionSummaryFrame extends javax.swing.JFrame {
 
     private void allTransactionTableMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_allTransactionTableMouseReleased
         // TODO add your handling code here:
+        System.out.println(allTransactionTableModel.getValueAt(allTransactionTable.getSelectedRow(), 3));
+        System.out.println(allTransactionTableModel.getValueAt(allTransactionTable.getSelectedRow(), 0));
         appFrame.syncIuranDebt(Iuran.Tipe.IPP, tSumID);
     }//GEN-LAST:event_allTransactionTableMouseReleased
+
+    private void allTransactionTablePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_allTransactionTablePropertyChange
+        // TODO add your handling code here:
+       // System.out.println(allTransactionTableModel.getValueAt(allTransactionTable.getSelectedRow(),3));
+    }//GEN-LAST:event_allTransactionTablePropertyChange
 
     /**
      * @param args the command line arguments
@@ -181,15 +198,15 @@ public class InputEditTransactionSummaryFrame extends javax.swing.JFrame {
     
     private void prepareTransactions(Long TSumID) throws SQLException, KasirException{
         transactionList = new ArrayList<IuranTransaction>();
-        
         TransactionSummary transactionSummary = Control.selectTSummary(TSumID);
         jTextFieldTransactionSummaryNote.setText(transactionSummary.note);
+        profil = Control.selectProfil(transactionSummary.noInduk);
         //IDD Part
         List<IDDTransactionDetail> iddTDetails;
         try {
             iddTDetails = Control.selectTDetails(TransactionDetail.Tipe.IDDTransaction, IDDTransactionDetail.idTSummaryColName, false, TSumID.toString());
             for(int i = 0 ; i < iddTDetails.size(); i++){
-                transactionList.add(new IuranTransaction(iddTDetails.get(i).idIuran, iddTDetails.get(i).amount, iddTDetails.get(i).note, Iuran.Tipe.IDD));
+                transactionList.add(new IuranTransaction(iddTDetails.get(i).id, iddTDetails.get(i).idIuran, iddTDetails.get(i).amount, iddTDetails.get(i).note, Iuran.Tipe.IDD));
             }
         } catch (SQLException ex) {
             Exceptions.printStackTrace(ex);
@@ -202,7 +219,7 @@ public class InputEditTransactionSummaryFrame extends javax.swing.JFrame {
         try {
             ipspTDetails = Control.selectTDetails(TransactionDetail.Tipe.IPSPTransaction, IPSPTransactionDetail.idTSummaryColName, false, TSumID.toString());
             for(int i = 0 ; i < ipspTDetails.size(); i++){
-                transactionList.add(new IuranTransaction(ipspTDetails.get(i).idIuran, ipspTDetails.get(i).amount, ipspTDetails.get(i).note, Iuran.Tipe.IPSP));
+                transactionList.add(new IuranTransaction(ipspTDetails.get(i).id, ipspTDetails.get(i).idIuran, ipspTDetails.get(i).amount, ipspTDetails.get(i).note, Iuran.Tipe.IPSP));
             }
         } catch (SQLException ex) {
             Exceptions.printStackTrace(ex);
@@ -215,7 +232,7 @@ public class InputEditTransactionSummaryFrame extends javax.swing.JFrame {
         try {
             ipsbTDetails = Control.selectTDetails(TransactionDetail.Tipe.IPSBTransaction, IPSBTransactionDetail.idTSummaryColName, false, TSumID.toString());
             for(int i = 0 ; i < ipsbTDetails.size(); i++){
-                transactionList.add(new IuranTransaction(ipsbTDetails.get(i).idIuran, ipsbTDetails.get(i).amount, ipsbTDetails.get(i).note, Iuran.Tipe.IPSB));
+                transactionList.add(new IuranTransaction(ipsbTDetails.get(i).id, ipsbTDetails.get(i).idIuran, ipsbTDetails.get(i).amount, ipsbTDetails.get(i).note, Iuran.Tipe.IPSB));
             }
         } catch (SQLException ex) {
             Exceptions.printStackTrace(ex);
@@ -223,25 +240,38 @@ public class InputEditTransactionSummaryFrame extends javax.swing.JFrame {
             Exceptions.printStackTrace(ex);
         }
 
-        //IUA Part
-        List<IUATransactionDetail> iuaTDetails;
-        try {
-            iuaTDetails = Control.selectTDetails(TransactionDetail.Tipe.IUATransaction, IUATransactionDetail.idTSummaryColName, false, TSumID.toString());
-            for(int i = 0 ; i < iuaTDetails.size(); i++){
-                transactionList.add(new IuranTransaction(iuaTDetails.get(i).idIuran, iuaTDetails.get(i).amount, iuaTDetails.get(i).note, Iuran.Tipe.IUA));
+        //IUA Part and IUAP Part
+        if(profil.currentLevel.level1.toString().equals("SMP") || profil.currentLevel.level1.toString().equals("SMK")){
+            List<IUATransactionDetail> iuaTDetails;
+            try {
+                iuaTDetails = Control.selectTDetails(TransactionDetail.Tipe.IUATransaction, IUATransactionDetail.idTSummaryColName, false, TSumID.toString());
+                for(int i = 0 ; i < iuaTDetails.size(); i++){
+                    transactionList.add(new IuranTransaction(iuaTDetails.get(i).id, iuaTDetails.get(i).idIuran, iuaTDetails.get(i).amount, iuaTDetails.get(i).note, Iuran.Tipe.IUA));
+                }
+            } catch (SQLException ex) {
+                Exceptions.printStackTrace(ex);
+            } catch (KasirException ex) {
+                Exceptions.printStackTrace(ex);
             }
-        } catch (SQLException ex) {
-            Exceptions.printStackTrace(ex);
-        } catch (KasirException ex) {
-            Exceptions.printStackTrace(ex);
+        }else if(profil.currentLevel.level1.toString().equals("SMA")){
+            List<IUAPTransactionDetail> iuapTDetails;
+            try {
+                iuapTDetails = Control.selectTDetails(TransactionDetail.Tipe.IUAPTransaction, IUAPTransactionDetail.idTSummaryColName, false, TSumID.toString());
+                for(int i = 0 ; i < iuapTDetails.size(); i++){
+                    transactionList.add(new IuranTransaction(iuapTDetails.get(i).id, iuapTDetails.get(i).idIuran, iuapTDetails.get(i).amount, iuapTDetails.get(i).note, Iuran.Tipe.IUAP));
+                }
+            } catch (SQLException ex) {
+                Exceptions.printStackTrace(ex);
+            } catch (KasirException ex) {
+                Exceptions.printStackTrace(ex);
+            }
         }
-
         //Seragam PART
         List<SeragamTransactionDetail> seragamTDetails;
         try {
             seragamTDetails = Control.selectTDetails(TransactionDetail.Tipe.SeragamTransaction, SeragamTransactionDetail.idTSummaryColName, false, TSumID.toString());
             for(int i = 0 ; i < seragamTDetails.size(); i++){
-                transactionList.add(new IuranTransaction(seragamTDetails.get(i).idIuran, seragamTDetails.get(i).amount, seragamTDetails.get(i).note, Iuran.Tipe.Seragam));
+                transactionList.add(new IuranTransaction(seragamTDetails.get(i).id, seragamTDetails.get(i).idIuran, seragamTDetails.get(i).amount, seragamTDetails.get(i).note, Iuran.Tipe.Seragam));
             }
         } catch (SQLException ex) {
             Exceptions.printStackTrace(ex);
@@ -254,7 +284,7 @@ public class InputEditTransactionSummaryFrame extends javax.swing.JFrame {
         try {
             attributeTDetails = Control.selectTDetails(TransactionDetail.Tipe.AttributeTransaction, AttributeTransactionDetail.idTSummaryColName, false, TSumID.toString());
             for(int i = 0 ; i < attributeTDetails.size(); i++){
-                transactionList.add(new IuranTransaction(attributeTDetails.get(i).idIuran, attributeTDetails.get(i).amount, attributeTDetails.get(i).note, Iuran.Tipe.Attribute));
+                transactionList.add(new IuranTransaction(attributeTDetails.get(i).id, attributeTDetails.get(i).idIuran, attributeTDetails.get(i).amount, attributeTDetails.get(i).note, Iuran.Tipe.Attribute));
             }
         } catch (SQLException ex) {
             Exceptions.printStackTrace(ex);
@@ -267,7 +297,7 @@ public class InputEditTransactionSummaryFrame extends javax.swing.JFrame {
         try {
             bukuTDetails = Control.selectTDetails(TransactionDetail.Tipe.BukuTransaction, BukuTransactionDetail.idTSummaryColName, false, TSumID.toString());
             for(int i = 0 ; i < bukuTDetails.size(); i++){
-                transactionList.add(new IuranTransaction(bukuTDetails.get(i).idIuran, bukuTDetails.get(i).amount, bukuTDetails.get(i).note, Iuran.Tipe.Buku));
+                transactionList.add(new IuranTransaction(bukuTDetails.get(i).id, bukuTDetails.get(i).idIuran, bukuTDetails.get(i).amount, bukuTDetails.get(i).note, Iuran.Tipe.Buku));
             }
         } catch (SQLException ex) {
             Exceptions.printStackTrace(ex);
@@ -280,7 +310,7 @@ public class InputEditTransactionSummaryFrame extends javax.swing.JFrame {
         try {
             illTDetails = Control.selectTDetails(TransactionDetail.Tipe.ILLTransaction, ILLTransactionDetail.idTSummaryColName, false, TSumID.toString());
             for(int i = 0 ; i < illTDetails.size(); i++){
-                transactionList.add(new IuranTransaction(illTDetails.get(i).idIuran, illTDetails.get(i).amount, illTDetails.get(i).note, Iuran.Tipe.ILL));
+                transactionList.add(new IuranTransaction(illTDetails.get(i).id, illTDetails.get(i).idIuran, illTDetails.get(i).amount, illTDetails.get(i).note, Iuran.Tipe.ILL));
             }
         } catch (SQLException ex) {
             Exceptions.printStackTrace(ex);
@@ -293,7 +323,7 @@ public class InputEditTransactionSummaryFrame extends javax.swing.JFrame {
         try {
             tabunganTDetails = Control.selectTDetails(TransactionDetail.Tipe.TabunganTransaction, TabunganTransactionDetail.idTSummaryColName, false, TSumID.toString());
             for(int i = 0 ; i < tabunganTDetails.size(); i++){
-                transactionList.add(new IuranTransaction(tabunganTDetails.get(i).idIuran, tabunganTDetails.get(i).amount, tabunganTDetails.get(i).note, Iuran.Tipe.Tabungan));
+                transactionList.add(new IuranTransaction(tabunganTDetails.get(i).id, tabunganTDetails.get(i).idIuran, tabunganTDetails.get(i).amount, tabunganTDetails.get(i).note, Iuran.Tipe.Tabungan));
             }
         } catch (SQLException ex) {
             Exceptions.printStackTrace(ex);
@@ -306,7 +336,7 @@ public class InputEditTransactionSummaryFrame extends javax.swing.JFrame {
         try {
             sumbanganTDetails = Control.selectTDetails(TransactionDetail.Tipe.SumbanganTransaction, SumbanganTransactionDetail.idTSummaryColName, false, TSumID.toString());
             for(int i = 0 ; i < sumbanganTDetails.size(); i++){
-                transactionList.add(new IuranTransaction(sumbanganTDetails.get(i).idIuran, sumbanganTDetails.get(i).amount, sumbanganTDetails.get(i).note, Iuran.Tipe.Sumbangan));
+                transactionList.add(new IuranTransaction(sumbanganTDetails.get(i).id, sumbanganTDetails.get(i).idIuran, sumbanganTDetails.get(i).amount, sumbanganTDetails.get(i).note, Iuran.Tipe.Sumbangan));
             }
         } catch (SQLException ex) {
             Exceptions.printStackTrace(ex);
@@ -319,7 +349,7 @@ public class InputEditTransactionSummaryFrame extends javax.swing.JFrame {
         try {
             ippTDetails = Control.selectTDetails(TransactionDetail.Tipe.IPPTransaction, IPPTransactionDetail.idTSummaryColName, false, TSumID.toString());
             for(int i = 0 ; i < ippTDetails.size(); i++){
-                transactionList.add(new IuranTransaction(ippTDetails.get(i).idIuran, ippTDetails.get(i).amount, ippTDetails.get(i).note, Iuran.Tipe.IPP));
+                transactionList.add(new IuranTransaction(ippTDetails.get(i).id, ippTDetails.get(i).idIuran, ippTDetails.get(i).amount, ippTDetails.get(i).note, Iuran.Tipe.IPP));
             }
         } catch (SQLException ex) {
             Exceptions.printStackTrace(ex);
@@ -332,7 +362,7 @@ public class InputEditTransactionSummaryFrame extends javax.swing.JFrame {
         try {
             iusTDetails = Control.selectTDetails(TransactionDetail.Tipe.IUSTransaction, IUSTransactionDetail.idTSummaryColName, false, TSumID.toString());
             for(int i = 0 ; i < iusTDetails.size(); i++){
-                transactionList.add(new IuranTransaction(iusTDetails.get(i).idIuran, iusTDetails.get(i).amount, iusTDetails.get(i).note, Iuran.Tipe.IUS));
+                transactionList.add(new IuranTransaction(iusTDetails.get(i).id, iusTDetails.get(i).idIuran, iusTDetails.get(i).amount, iusTDetails.get(i).note, Iuran.Tipe.IUS));
             }
         } catch (SQLException ex) {
             Exceptions.printStackTrace(ex);
@@ -345,7 +375,7 @@ public class InputEditTransactionSummaryFrame extends javax.swing.JFrame {
         try {
             iksTDetails = Control.selectTDetails(TransactionDetail.Tipe.IKSTransaction, IKSTransactionDetail.idTSummaryColName, false, TSumID.toString());
             for(int i = 0 ; i < iksTDetails.size(); i++){
-                transactionList.add(new IuranTransaction(iksTDetails.get(i).idIuran, iksTDetails.get(i).amount, iksTDetails.get(i).note, Iuran.Tipe.IKS));
+                transactionList.add(new IuranTransaction(iksTDetails.get(i).id, iksTDetails.get(i).idIuran, iksTDetails.get(i).amount, iksTDetails.get(i).note, Iuran.Tipe.IKS));
             }
         } catch (SQLException ex) {
             Exceptions.printStackTrace(ex);
@@ -358,7 +388,7 @@ public class InputEditTransactionSummaryFrame extends javax.swing.JFrame {
         try {
             pvtTDetails = Control.selectTDetails(TransactionDetail.Tipe.PVTTransaction, PVTTransactionDetail.idTSummaryColName, false, TSumID.toString());
             for(int i = 0 ; i < pvtTDetails.size(); i++){
-                transactionList.add(new IuranTransaction(pvtTDetails.get(i).idIuran, pvtTDetails.get(i).amount, pvtTDetails.get(i).note, Iuran.Tipe.PVT));
+                transactionList.add(new IuranTransaction(pvtTDetails.get(i).id, pvtTDetails.get(i).idIuran, pvtTDetails.get(i).amount, pvtTDetails.get(i).note, Iuran.Tipe.PVT));
             }
         } catch (SQLException ex) {
             Exceptions.printStackTrace(ex);
@@ -371,7 +401,7 @@ public class InputEditTransactionSummaryFrame extends javax.swing.JFrame {
         try {
             osisTDetails = Control.selectTDetails(TransactionDetail.Tipe.OSISTransaction, OSISTransactionDetail.idTSummaryColName, false, TSumID.toString());
             for(int i = 0 ; i < osisTDetails.size(); i++){
-                transactionList.add(new IuranTransaction(osisTDetails.get(i).idIuran, osisTDetails.get(i).amount, osisTDetails.get(i).note, Iuran.Tipe.OSIS));
+                transactionList.add(new IuranTransaction(osisTDetails.get(i).id, osisTDetails.get(i).idIuran, osisTDetails.get(i).amount, osisTDetails.get(i).note, Iuran.Tipe.OSIS));
             }
         } catch (SQLException ex) {
             Exceptions.printStackTrace(ex);
@@ -391,21 +421,30 @@ public class InputEditTransactionSummaryFrame extends javax.swing.JFrame {
     }
     
     private TableModel buildAllTransactionTableModel(ArrayList<IuranTransaction> at) throws SQLException, KasirException {
-       String columnNames[] = {"Tipe Iuran", "Jumlah", "Catatan"};
-       Object[][] data = new Object[at.size()][3];
+       String columnNames[] = {"Tipe Iuran", "Jumlah", "Catatan", "TransactionDetailID"};
+       JFormattedTextField amountFTF = new JFormattedTextField(0.0);
+       amountFTF.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("Rp #,##0"))));
+       Object[][] data = new Object[at.size()][4];
          
         for(int i = 0 ; i < at.size(); i++){
             data[i][0]= at.get(i).tipeIuran;
-            data[i][1]= at.get(i).amount; 
+            amountFTF.setValue(at.get(i).amount);
+            data[i][1]= amountFTF.getText(); 
             data[i][2]= at.get(i).note;
+            data[i][3]= at.get(i).tDetailID;
         }
-       
        TableModel tm = new DefaultTableModel(data, columnNames){
            @Override
             public boolean isCellEditable(int row, int column) {
+                if(column == 0 || column == 2 || column ==3){
                     return false;
+                }else if(column == 1){
+                    return true;
+                }
+                return false;
             }
        };
+       
        return tm;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -418,11 +457,13 @@ public class InputEditTransactionSummaryFrame extends javax.swing.JFrame {
 }
 class IuranTransaction{
     Long tDetailID;
+    Long iuranID;
     Iuran.Tipe tipeIuran;
     Float amount;
     String note;
-    public IuranTransaction(Long id, Float a, String n, Iuran.Tipe it){
-        tDetailID = id;
+    public IuranTransaction(Long tdid, Long iid, Float a, String n, Iuran.Tipe it){
+        tDetailID = tdid;
+        iuranID = iid;
         amount = a;
         note = n;
         tipeIuran = it;

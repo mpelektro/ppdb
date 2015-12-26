@@ -46,6 +46,7 @@ import sak.KasirException;
 public class AppFrame extends javax.swing.JFrame {
     private Long tSumID;
     private ArrayList<IPP> paramIPPs;
+    private ArrayList<IUAP> paramIUAPs;
     private ArrayList<CicilanHutang> paramCicilanHutangs;
     private IPSP paramIPSP;
     private PASB paramPASB;
@@ -187,6 +188,11 @@ public class AppFrame extends javax.swing.JFrame {
         jLabelNamaSiswa.setText(org.openide.util.NbBundle.getMessage(AppFrame.class, "AppFrame.jLabelNamaSiswa.text")); // NOI18N
 
         jTextFieldNamaSiswa.setText(org.openide.util.NbBundle.getMessage(AppFrame.class, "AppFrame.jTextFieldNamaSiswa.text")); // NOI18N
+        jTextFieldNamaSiswa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldNamaSiswaActionPerformed(evt);
+            }
+        });
 
         jLabelNomorInduk.setText(org.openide.util.NbBundle.getMessage(AppFrame.class, "AppFrame.jLabelNomorInduk.text")); // NOI18N
 
@@ -672,7 +678,7 @@ public class AppFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         //new InputTransactionFrameSeparated(this.clerk, this.profil).setVisible(true);
         //new InputTransactionFrameSeparated(this.clerk, this.profil, paramIPSP).setVisible(true);
-        new InputTransactionFrameSeparated(this, this.clerk, this.profil,paramIPPs, paramIPSP, paramSeragams, paramBukus, paramIKSs, paramILLs, paramIPSB, paramIUA, paramIUSs, paramOSISs, paramAttributes, paramPVTs, paramTabungans, paramSumbangans, paramPASB, paramCicilanHutangs, paramAlmamaters).setVisible(true);
+        new InputTransactionFrameSeparated(this, this.clerk, this.profil,paramIPPs, paramIPSP, paramSeragams, paramBukus, paramIKSs, paramILLs, paramIPSB, paramIUA, paramIUSs, paramOSISs, paramAttributes, paramPVTs, paramTabungans, paramSumbangans, paramPASB, paramCicilanHutangs, paramAlmamaters, paramIUAPs).setVisible(true);
     }//GEN-LAST:event_jButtonTransaksiActionPerformed
 
     private void jButtonSettingIuranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSettingIuranActionPerformed
@@ -796,7 +802,7 @@ public class AppFrame extends javax.swing.JFrame {
             TransactionSummary tsum = Control.selectTSummary(tSumID);
             Profil tempProfil = Control.selectProfil(tsum.noInduk);
             TableModel tm = buildTunggakanProfilTableModel(tempProfil);
-            InputTransactionFrameSeparated itfs = new InputTransactionFrameSeparated(this, this.clerk, tempProfil,paramIPPs, paramIPSP, paramSeragams, paramBukus, paramIKSs, paramILLs, paramIPSB, paramIUA, paramIUSs, paramOSISs, paramAttributes, paramPVTs, paramTabungans, paramSumbangans, paramPASB, paramCicilanHutangs, paramAlmamaters);
+            InputTransactionFrameSeparated itfs = new InputTransactionFrameSeparated(this, this.clerk, tempProfil,paramIPPs, paramIPSP, paramSeragams, paramBukus, paramIKSs, paramILLs, paramIPSB, paramIUA, paramIUSs, paramOSISs, paramAttributes, paramPVTs, paramTabungans, paramSumbangans, paramPASB, paramCicilanHutangs, paramAlmamaters, paramIUAPs);
             try {
                 itfs.printBuktiPembayaran(tsum, tm, totalDebt);
             } catch (JRException ex) {
@@ -816,6 +822,30 @@ public class AppFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         new InputEditTransactionSummaryFrame(this, this.tSumID, this.clerk).setVisible(true);
     }//GEN-LAST:event_jButtonTSumEditActionPerformed
+
+    private void jTextFieldNamaSiswaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNamaSiswaActionPerformed
+        // TODO add your handling code here:
+        try {
+            Biodata biodata = jTextFieldNamaSiswa.getText().isEmpty()? new Biodata(): new Biodata(jTextFieldNamaSiswa.getText(), null,null, null, null, null, null, null, null, null, null);
+            Profil profil = new Profil();
+            String noInduk = jTextFieldNomorInduk.getText();
+            Level level = new Level();
+            level.level1 = (Level.Level1)jComboBoxLevel1.getSelectedItem();
+            level.level2 = (Level.Level2)jComboBoxLevel2.getSelectedItem();
+            level.level3 = (Level.Level3)jComboBoxLevel3.getSelectedItem();
+            profil.biodata = biodata.isEmpty()?null:biodata;
+            profil.currentLevel = level.isEmpty()?null:level;
+            profil.noInduk = noInduk.isEmpty()?null:noInduk;
+            tableModelInitialSearch = buildInitialTableModel(profil);
+            jTableInitialSearch.setModel(tableModelInitialSearch);
+        } catch (SQLException ex) {
+            Exceptions.printStackTrace(ex);
+            JOptionPane.showMessageDialog(rootPane, "Connection to database error!\r\n".concat(ex.toString()));
+        } catch (KasirException ex) {
+            Exceptions.printStackTrace(ex);
+            JOptionPane.showMessageDialog(rootPane, "Login Invalid!\r\n".concat(ex.toString()));
+        }
+    }//GEN-LAST:event_jTextFieldNamaSiswaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -916,7 +946,7 @@ public class AppFrame extends javax.swing.JFrame {
    public boolean syncIuranDebt(Iuran.Tipe it, Long iuranID){
        if(it == Iuran.Tipe.IPP){
            System.out.println("Sync Iuran Debt IPP");
-           System.out.println(iuranID);
+           //System.out.println(iuranID);
        }
        return true;
    }
@@ -980,6 +1010,48 @@ public class AppFrame extends javax.swing.JFrame {
             j++;
         }
         paramIPPs = new ArrayList<>(tunggakanIPPs);
+       }
+       
+       //IUAP
+       
+       List<IUAP> tunggakanIUAPs = new ArrayList<IUAP>();
+       
+       Set<IUAP> iuapFilters = new HashSet<>();
+       iuapFilters.add(new IUAP(profil.noInduk, null, null));
+       Map<Long, IUAP> srmIUAP =new HashMap<>();
+       srmIUAP = Control.exactFilterSelectIurans(Iuran.Tipe.IUAP, iuapFilters);
+       j = 0;
+       targetIndex = 12;
+       if(srmIUAP.size() > 0){
+        for(Map.Entry<Long, IUAP> entry: srmIUAP.entrySet()){
+            Float temp = 0f;
+            if(targetYear == entry.getValue().chargedLevel.tahun){
+                for(int i = 0 ; i < 12 ; i++){
+                    if(i<targetMonth){
+                        temp += entry.getValue().entries.get(i).debt;
+                    }else{
+                        entry.getValue().entries.get(i).debt = 0;
+                        temp += entry.getValue().entries.get(i).debt;
+                    }
+                }
+                if(temp > 0){
+                    tunggakans.add(new Tunggakan("IUAP", temp, "IUAP ".concat(getTahunAjaran(entry.getValue().chargedLevel.tahun))));
+                    tunggakanIUAPs.add(entry.getValue());
+                }
+            }else{
+                for(int i = 0 ; i < 12 ; i++){
+                    temp += entry.getValue().entries.get(i).debt;
+                }
+                if(temp > 0){
+                    tunggakans.add(new Tunggakan("IUAP", temp, "IUAP ".concat(getTahunAjaran(entry.getValue().chargedLevel.tahun))));
+                    tunggakanIUAPs.add(entry.getValue());
+                }
+            }
+            
+            temp = 0f;
+            j++;
+        }
+        paramIUAPs = new ArrayList<>(tunggakanIUAPs);
        }
 
        //IPSP
@@ -1633,7 +1705,8 @@ public class AppFrame extends javax.swing.JFrame {
         jasperParameter.put("Param_Clerk_ID", Long.valueOf(cl.id));
         jasperParameter.put("Param_Start_Date", startDate.toTimestamp());
         jasperParameter.put("Param_End_Date", endDate.toTimestamp());
-        
+        if(jComboBoxLevel1.getSelectedItem() != null)
+        jasperParameter.put("Param_Level", "%".concat(jComboBoxLevel1.getSelectedItem().toString()).concat("%"));
         
          String fileName = "C://printout//PrintOutReportPerKasir.jrxml";
             String filetoPrint = "C://printout//PrintOutReportPerKasir.jrprint";

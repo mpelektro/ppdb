@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PrintOutReportPerKasir" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="64a527d2-9b7c-4dde-b8ca-ee908cdb19d4">
 	<property name="ireport.zoom" value="1.6105100000000008"/>
-	<property name="ireport.x" value="261"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="Param_Clerk_ID" class="java.lang.Long">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -11,6 +11,9 @@
 	</parameter>
 	<parameter name="Param_End_Date" class="java.sql.Timestamp" isForPrompting="false">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Param_Level" class="java.lang.String">
+		<defaultValueExpression><![CDATA["%"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
@@ -51,6 +54,7 @@ WHERE
  AND TransactionSummary.`CreateDate` >= $P{Param_Start_Date}
  AND TransactionSummary.`CreateDate` <= $P{Param_End_Date}
  AND Profil.`NomorInduk` = TransactionSummary.`NomorInduk`
+ AND Profil.`CurrentLevel` LIKE $P{Param_Level}
 ORDER BY TransactionSummary.`ID`]]>
 	</queryString>
 	<field name="TransactionSummary_ID" class="java.math.BigInteger"/>

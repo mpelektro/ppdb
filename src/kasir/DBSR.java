@@ -8,8 +8,8 @@ import org.apache.commons.lang3.StringUtils;
 import sak.*;
 
 public class DBSR{
-    //public static final String dbURL = "jdbc:mysql://ark3.dayarka.com/rusly_kasirdb", dbUsername = "marbun", dbPass = "marbun123456";
-    public static final String dbURL = "jdbc:mysql://localhost/rusly_ppdbdb", dbUsername = "marbun", dbPass = "marbun123456";
+    public static final String dbURL = "jdbc:mysql://ark3.dayarka.com/rusly_kasirdb", dbUsername = "marbun", dbPass = "marbun123456";
+    //public static final String dbURL = "jdbc:mysql://ark3.dayarka.com/rusly_ppdbdb", dbUsername = "marbun", dbPass = "marbun123456";
     public static Connection conn;
     public static Statement stmt;
 
